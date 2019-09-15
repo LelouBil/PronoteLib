@@ -43,10 +43,10 @@
     <br />(https://www.index-education.com/fr/logiciel-gestion-vie-scolaire.php)
     <br />
     <br />
-    <a href="https://github.com/LelouBil/PronoteLib"><strong>Documentation »</strong></a>
+    <a href="https://github.com/LelouBil/PronoteLib/wiki"><strong>Documentation »</strong></a>
     <br />
     <br />
-    <a href="https://github.com/LelouBil/PronoteLib">Exemples</a>
+    <a href="https://github.com/LelouBil/PronoteLib/wiki/Exemples">Exemples</a>
     ·
     <a href="https://github.com/LelouBil/PronoteLib/issues">Signaler un Bug</a>
     ·
