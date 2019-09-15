@@ -63,7 +63,7 @@ et c'est le cas
 en plus leur api a un format bizarre
 c'est a dire que ils envoient et recoive du json a chaque fois
 du style
-```json
+```javascript
 {
 donneesSec:
     {
@@ -74,7 +74,7 @@ donneesSec:
     }
 nom: "FonctionParametres"
 session: 45654654
-numeroOrdre: a5D5eD5as6d5F
+numeroOrdre: "a5D5eD5as6d5F"
 }
 ```
 du coup le premier c'est toujours le meme
