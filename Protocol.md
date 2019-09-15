@@ -1,4 +1,4 @@
-# PronoteLib
+# Comment communiquer avec le serveur pronote
 
 alors ca sera une library au final mais pour l'instant y'a un main
 
