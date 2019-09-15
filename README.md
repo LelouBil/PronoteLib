@@ -28,7 +28,9 @@
 ![GitHub](https://img.shields.io/github/license/LelouBil/PronoteLib?style=flat-square)
 ![JitPack](https://img.shields.io/jitpack/v/github/LelouBil/PronoteLib?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LelouBil/PronoteLib?style=flat-square)
+![Github latest release](https://flat.badgen.net/github/release/lelouBil/PronoteLib)
 ![Discord](https://img.shields.io/badge/Discord-LelouBil%239388-%237289DA?style=flat-square&logo=discord)
+[![Known Vulnerabilities](https://snyk.io/test/github/LelouBil/PronoteLib/badge.svg)](https://snyk.io/test/github/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
