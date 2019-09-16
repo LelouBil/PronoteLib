@@ -1,4 +1,4 @@
-package net.leloubil.betterpronote;
+package net.leloubil.pronotelib;
 
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;

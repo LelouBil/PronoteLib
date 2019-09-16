@@ -1,4 +1,4 @@
-package net.leloubil.betterpronote;
+package net.leloubil.pronotelib;
 
 public class Salle {
 

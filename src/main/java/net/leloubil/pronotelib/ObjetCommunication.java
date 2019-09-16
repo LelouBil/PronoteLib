@@ -1,4 +1,4 @@
-package net.leloubil.betterpronote;
+package net.leloubil.pronotelib;
 
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
