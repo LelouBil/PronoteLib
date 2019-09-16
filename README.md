@@ -22,15 +22,13 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
-![GitHub stars](https://img.shields.io/github/stars/LelouBil/PronoteLib?style=social)
 ![GitHub issues](https://img.shields.io/github/issues/LelouBil/PronoteLib?style=flat-square)
-[![GitHub forks](https://img.shields.io/github/forks/LelouBil/PronoteLib)](https://github.com/LelouBil/PronoteLib/network)
 ![GitHub](https://img.shields.io/github/license/LelouBil/PronoteLib?style=flat-square)
-![JitPack](https://img.shields.io/jitpack/v/github/LelouBil/PronoteLib?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LelouBil/PronoteLib?style=flat-square)
 ![Github latest release](https://flat.badgen.net/github/release/lelouBil/PronoteLib)
 ![Discord](https://img.shields.io/badge/Discord-LelouBil%239388-%237289DA?style=flat-square&logo=discord)
 [![Known Vulnerabilities](https://snyk.io/test/github/LelouBil/PronoteLib/badge.svg)](https://snyk.io/test/github/LelouBil/PronoteLib)
+[![Build Status](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
