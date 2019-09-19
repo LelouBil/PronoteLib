@@ -1,10 +1,15 @@
 package net.leloubil.pronotelib;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.core.Version;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import net.leloubil.pronotelib.data.Cour;
+import net.leloubil.pronotelib.data.EDT;
 import okhttp3.*;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -16,7 +21,6 @@ import javax.crypto.NoSuchPaddingException;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
-import java.lang.ref.PhantomReference;
 import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
@@ -34,11 +38,30 @@ import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
 
 @SuppressWarnings("unchecked")
 public class ObjetCommunication {
+
+    public static EDT getEmploiDuTemps(int semaine){
+        JsonNode jsonedt = navigate("PageEmploiDuTemps",Collections.singletonMap("NumeroSemaine",semaine)).get("donneesSec").get("donnees");
+        SimpleModule module =
+                new SimpleModule("LongDeserializerModule",
+                        new Version(1, 0, 0, null, null, null));
+        module.addDeserializer(Cour.class, new Cour.CoursDeserializer());
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(module);
+        try {
+            EDT edt = om.treeToValue(jsonedt,EDT.class);
+            return edt;
+        } catch (JsonProcessingException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static String cookie = "";
     private static Map<String,Integer> Onglets = Stream.of(new Object[][] {
             { "PageAccueil", 7 },
             { "PageCahierDeTexte", 89 },
+            {"PageEmploiDuTemps", 16 }
     }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));;
 
     public static JsonNode appelFonction(String foncName){
