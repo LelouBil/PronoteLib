@@ -1,6 +1,6 @@
 package net.leloubil.pronotelib;
 
-public class CoreData {
+public class RequestBase {
 
     public String nom;
 
@@ -9,17 +9,17 @@ public class CoreData {
     public long session;
 
 
-    public CoreData( String numeroOrdre, long session) {
+    public RequestBase( String numeroOrdre, long session) {
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
 
-    public CoreData(String nom, String numeroOrdre, long session) {
+    public RequestBase(String nom, String numeroOrdre, long session) {
         this.nom = nom;
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
-    public CoreData(){
+    public RequestBase(){
 
     }
 }

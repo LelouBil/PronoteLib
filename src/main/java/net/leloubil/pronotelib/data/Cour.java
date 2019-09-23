@@ -164,7 +164,8 @@ public class Cour {
     }
 
     public static class CoursDeserializer extends StdDeserializer<Cour> {
-        @Override
+        ObjetCommunication link;
+	@Override
         public Cour deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode node = p.getCodec().readTree(p);
 
@@ -180,7 +181,7 @@ public class Cour {
             Map map = om.readValue(json, Map.class);
             map.put("cours", Collections.singletonMap("N",id));
             Cour c = om.treeToValue(node,Cour.class);
-            JsonNode cour = ObjetCommunication.appelFonction("FicheCours",map).get("donneesSec").get("donnees");
+            JsonNode cour = link.appelFonction("FicheCours",map).get("donneesSec").get("donnees");
             cour = cour.get("listeCours").get("V").get(0);
 
             c.avecDevoirs = cour.get("avecCDT").asBoolean();
@@ -199,8 +200,9 @@ public class Cour {
             return c;
         }
 
-        public CoursDeserializer(){
+        public CoursDeserializer(ObjetCommunication ln){
             super(Cour.class);
+	    link = ln;
         }
     }
 }
