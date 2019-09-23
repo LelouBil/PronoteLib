@@ -1,4 +1,4 @@
-package net.leloubil.pronotelib.data;
+package net.leloubil.pronotelib.entities;
 
 import net.leloubil.pronotelib.ObjetCommunication;
 import org.junit.Test;

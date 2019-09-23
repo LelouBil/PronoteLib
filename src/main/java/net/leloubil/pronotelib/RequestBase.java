@@ -9,7 +9,7 @@ public class RequestBase {
     public long session;
 
 
-    public RequestBase( String numeroOrdre, long session) {
+    public RequestBase(String numeroOrdre, long session) {
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
@@ -19,7 +19,8 @@ public class RequestBase {
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
-    public RequestBase(){
+
+    public RequestBase() {
 
     }
 }
