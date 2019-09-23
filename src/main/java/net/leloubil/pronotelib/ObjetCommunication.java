@@ -8,7 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.leloubil.pronotelib.entities.Cour;
+import net.leloubil.pronotelib.entities.Lesson;
 import net.leloubil.pronotelib.entities.EDT;
 import okhttp3.*;
 import org.apache.commons.codec.DecoderException;
@@ -44,12 +44,11 @@ public class ObjetCommunication {
         SimpleModule module =
                 new SimpleModule("LongDeserializerModule",
                         new Version(1, 0, 0, null, null, null));
-        module.addDeserializer(Cour.class, new Cour.CoursDeserializer());
+        module.addDeserializer(Lesson.class, new Lesson.LessonDeserializer());
         ObjectMapper om = new ObjectMapper();
         om.registerModule(module);
         try {
-            EDT edt = om.treeToValue(jsonedt, EDT.class);
-            return edt;
+            return om.treeToValue(jsonedt, EDT.class);
         } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
@@ -301,7 +300,6 @@ public class ObjetCommunication {
             e.printStackTrace();
         }
 
-        return;
     }
 
     public static void computeEncryption() throws NoSuchAlgorithmException, InvalidKeySpecException, InvalidKeyException, NoSuchPaddingException, BadPaddingException, IllegalBlockSizeException {

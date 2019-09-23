@@ -22,7 +22,7 @@ public class EDT {
     @JsonProperty("prefsGrille")
     private int genreRessource;
     @JsonProperty("ListeCours")
-    private List<Cour> cours;
+    private List<Lesson> lessons;
 
     @JsonProperty("avecCoursAnnule")
     public boolean avecCoursAnnule() {
@@ -46,8 +46,8 @@ public class EDT {
     }
 
     @JsonProperty("ListeCours")
-    public List<Cour> getCours() {
-        return cours;
+    public List<Lesson> getLessons() {
+        return lessons;
     }
 
 
@@ -58,7 +58,7 @@ public class EDT {
                 .append("parametreExportiCal", parametreExportiCal)
                 .append("avecExportICal", avecExportICal)
                 .append("prefsGrille", genreRessource)
-                .append("listeCours", cours)
+                .append("listeCours", lessons)
                 .toString();
     }
 
@@ -66,7 +66,7 @@ public class EDT {
     public int hashCode() {
         return new HashCodeBuilder()
                 .append(parametreExportiCal)
-                .append(cours)
+                .append(lessons)
                 .append(genreRessource)
                 .append(avecExportICal)
                 .append(avecCoursAnnule)
@@ -83,7 +83,7 @@ public class EDT {
             return false;
         }
         EDT rhs = ((EDT) other);
-        return new EqualsBuilder().append(parametreExportiCal, rhs.parametreExportiCal).append(cours, rhs.cours).append(genreRessource, rhs.genreRessource).append(avecExportICal, rhs.avecExportICal).append(avecCoursAnnule, rhs.avecCoursAnnule).isEquals();
+        return new EqualsBuilder().append(parametreExportiCal, rhs.parametreExportiCal).append(lessons, rhs.lessons).append(genreRessource, rhs.genreRessource).append(avecExportICal, rhs.avecExportICal).append(avecCoursAnnule, rhs.avecCoursAnnule).isEquals();
     }
 
 }

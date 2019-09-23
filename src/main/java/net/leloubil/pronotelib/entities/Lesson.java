@@ -34,7 +34,7 @@ import java.util.*;
         "Statut",
         "estAnnule"
 })
-public class Cour {
+public class Lesson {
 
     @JsonProperty("N")
     private String id;
@@ -45,38 +45,42 @@ public class Cour {
     @JsonProperty("place")
     private Integer place; //todo
     @JsonProperty("duree")
-    private int duree;
+    private int duration;
     @JsonProperty("DateDuCours")
     @JsonDeserialize(using = DateDeserializer.class)
-    private Date dateDuCours;
+    private Date LessonDate;
     @JsonProperty("CouleurFond")
-    private String couleurFond;
-    private ClassData classData;
+    private String backgroundColor;
+    private LessonData lessonData;
     @JsonProperty("AvecTafPublie")
-    private boolean avecDevoirs;
+    private boolean withLesson;
     @JsonProperty("cahierDeTextes")
     @JsonDeserialize(using = CDTDeser.class)
-    private String devoirId;
+    private String homeworkID;
     @JsonProperty("Statut")
-    private String statut;
+    private String status;
     @JsonProperty("estAnnule")
-    private boolean estAnnule;
+    private boolean isCancelled;
 
+    //Deobfuscate
     @JsonProperty("N")
     public String getId() {
         return id;
     }
 
+    //Deobfuscate
     @JsonProperty("G")
     public Integer getG() {
         return g;
     }
 
+    //Deobfuscate
     @JsonProperty("G")
     public void setG(Integer g) {
         this.g = g;
     }
 
+    //Deobfuscate
     @JsonProperty("P")
     public Integer getP() {
         return p;
@@ -88,59 +92,69 @@ public class Cour {
         return place;
     }
 
-
+    /**
+     * Lesson duration, in FIXME document unit.
+     *
+     * @return An {@link Integer} representing the lesson duration in FIXME document unit.
+     */
     @JsonProperty("duree")
-    public Integer getDuree() {
-        return duree;
+    public Integer getDuration() {
+        return duration;
     }
 
-
+    /**
+     * The {@link Date} at which the lesson should occur.
+     * @return A {@link Date} representing the date at which the lesson should occur.
+     */
     @JsonProperty("DateDuCours")
-    public Date getDateDuCours() {
-        return dateDuCours;
+    public Date getLessonDate() {
+        return LessonDate;
     }
-
 
     @JsonProperty("CouleurFond")
-    public String getCouleurFond() {
-        return couleurFond;
+    public String getBackgroundColor() {
+        return backgroundColor;
     }
 
 
     @JsonProperty("ListeContenus")
-    public ClassData getListeContenus() {
-        return classData;
+    public LessonData getListeContenus() {
+        return lessonData;
     }
 
+    /**
+     * Whichever this lesson has homework associated whith it.
+     * @return {@code true} if this lesson has homework, {@code false} otherwise.
+     */
     @JsonProperty("AvecTafPublie")
-    public boolean hasDevoir() {
-        return avecDevoirs;
+    public boolean hasHomework() {
+        return withLesson;
     }
 
 
     @JsonProperty("cahierDeTextes")
-    public String getDevoirId() {
-        return devoirId;
+    public String getHomeworkID() {
+        return homeworkID;
     }
 
     @JsonProperty("Statut")
-    public String getStatut() {
-        return statut;
+    public String getStatus() {
+        return status;
     }
 
     @JsonProperty("estAnnule")
-    public Boolean getEstAnnule() {
-        return estAnnule;
+    public Boolean isCancelled() {
+        return isCancelled;
     }
 
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("id", id).append("g", g).append("p", p).append("place", place).append("duree", duree).append("dateDuCours", dateDuCours).append("couleurFond", couleurFond).append("classData", classData).append("avecDevoirs", avecDevoirs).append("devoirId", devoirId).append("statut", statut).append("estAnnule", estAnnule).toString();
+        return new ToStringBuilder(this).append("id", id).append("g", g).append("p", p).append("place", place).append("duree", duration).append("dateDuCours", LessonDate).append("couleurFond", backgroundColor).append("lessonData", lessonData).append("avecDevoirs", withLesson).append("devoirId", homeworkID).append("statut", status).append("estAnnule", isCancelled).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(g).append(statut).append(devoirId).append(id).append(avecDevoirs).append(dateDuCours).append(p).append(estAnnule).append(couleurFond).append(duree).append(place).append(classData).toHashCode();
+        return new HashCodeBuilder().append(g).append(status).append(homeworkID).append(id).append(withLesson).append(LessonDate).append(p).append(isCancelled).append(backgroundColor).append(duration).append(place).append(lessonData).toHashCode();
     }
 
     //FIXME: Useless
@@ -149,11 +163,11 @@ public class Cour {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof Cour)) {
+        if (!(other instanceof Lesson)) {
             return false;
         }
-        Cour rhs = ((Cour) other);
-        return new EqualsBuilder().append(g, rhs.g).append(statut, rhs.statut).append(devoirId, rhs.devoirId).append(id, rhs.id).append(avecDevoirs, rhs.avecDevoirs).append(dateDuCours, rhs.dateDuCours).append(p, rhs.p).append(estAnnule, rhs.estAnnule).append(couleurFond, rhs.couleurFond).append(duree, rhs.duree).append(place, rhs.place).append(classData, rhs.classData).isEquals();
+        Lesson rhs = ((Lesson) other);
+        return new EqualsBuilder().append(g, rhs.g).append(status, rhs.status).append(homeworkID, rhs.homeworkID).append(id, rhs.id).append(withLesson, rhs.withLesson).append(LessonDate, rhs.LessonDate).append(p, rhs.p).append(isCancelled, rhs.isCancelled).append(backgroundColor, rhs.backgroundColor).append(duration, rhs.duration).append(place, rhs.place).append(lessonData, rhs.lessonData).isEquals();
     }
 
     public static class CDTDeser extends StdDeserializer<String> {
@@ -168,13 +182,13 @@ public class Cour {
         }
     }
 
-    public static class CoursDeserializer extends StdDeserializer<Cour> {
-        public CoursDeserializer() {
-            super(Cour.class);
+    public static class LessonDeserializer extends StdDeserializer<Lesson> {
+        public LessonDeserializer() {
+            super(Lesson.class);
         }
 
         @Override
-        public Cour deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+        public Lesson deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode node = p.getCodec().readTree(p);
 
             String id = node.get("N").asText();
@@ -188,24 +202,24 @@ public class Cour {
             om.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
             Map map = om.readValue(json, Map.class);
             map.put("cours", Collections.singletonMap("N", id));
-            Cour c = om.treeToValue(node, Cour.class);
+            Lesson c = om.treeToValue(node, Lesson.class);
             JsonNode cour = ObjetCommunication.appelFonction("FicheCours", map).get("donneesSec").get("donnees");
             cour = cour.get("listeCours").get("V").get(0);
 
-            c.avecDevoirs = cour.get("avecCDT").asBoolean();
-            ClassData d = new ClassData();
+            c.withLesson = cour.get("avecCDT").asBoolean();
+            LessonData d = new LessonData();
             d.className = cour.get("matiere").get("V").get("L").asText();
             d.teacher = cour.get("ListeContenus").get("V").get(0).get("L").asText();
             if (cour.get("ListeContenus").get("V").size() >= 2)
                 d.room = cour.get("ListeContenus").get("V").get(1).get("L").asText();
-            c.classData = d;
+            c.lessonData = d;
             String date = cour.get("DateDuCours").get("V").asText().replace("\\", "");
 
             String[] day = date.split(" ")[0].split("/");
             String[] hour = date.split(" ")[1].split(":");
 
             Calendar ca = new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
-            c.dateDuCours = ca.getTime();
+            c.LessonDate = ca.getTime();
             return c;
         }
     }

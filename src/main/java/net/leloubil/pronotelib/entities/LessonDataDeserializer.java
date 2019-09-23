@@ -7,17 +7,17 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 
 import java.io.IOException;
 
-public class ClassDataDeserializer extends StdDeserializer<ClassData> {
+public class LessonDataDeserializer extends StdDeserializer<LessonData> {
 
-    public ClassDataDeserializer() {
-        super(ClassData.class);
+    public LessonDataDeserializer() {
+        super(LessonData.class);
     }
 
     @Override
-    public ClassData deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
+    public LessonData deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
 
         ArrayNode node = (ArrayNode) p.getCodec().readTree(p).get("V");
-        ClassData c = new ClassData();
+        LessonData c = new LessonData();
         try {
             c.className = node.get(0).get("L").asText();
 

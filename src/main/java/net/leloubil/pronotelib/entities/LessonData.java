@@ -11,7 +11,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
         "_T",
         "V"
 })
-public class ClassData {
+public class LessonData {
 
     String teacher;
 
@@ -43,10 +43,10 @@ public class ClassData {
         if (other == this) {
             return true;
         }
-        if (!(other instanceof ClassData)) {
+        if (!(other instanceof LessonData)) {
             return false;
         }
-        ClassData rhs = ((ClassData) other);
+        LessonData rhs = ((LessonData) other);
         return new EqualsBuilder()
                 .append(className, rhs.className)
                 .append(teacher, rhs.teacher)
