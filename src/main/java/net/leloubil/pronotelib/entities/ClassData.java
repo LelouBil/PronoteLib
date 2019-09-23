@@ -1,13 +1,6 @@
-package net.leloubil.pronotelib.data;
+package net.leloubil.pronotelib.entities;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import com.fasterxml.jackson.annotation.JsonAnyGetter;
-import com.fasterxml.jackson.annotation.JsonAnySetter;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonInclude;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
@@ -20,23 +13,31 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 })
 public class ClassData {
 
-    public String teacher;
+    String teacher;
 
     public String className;
 
     public String room;
 
 
+    //FIXME: You should probably use java builtin StringBuilder
     @Override
     public String toString() {
-        return new ToStringBuilder(this).append("teacher", teacher).append("className", className).append("room", room).toString();
+        return new ToStringBuilder(this)
+                .append("teacher", teacher)
+                .append("className", className)
+                .append("room", room).toString();
     }
 
     @Override
     public int hashCode() {
-        return new HashCodeBuilder().append(teacher).append(className).append(room).toHashCode();
+        return new HashCodeBuilder()
+                .append(teacher)
+                .append(className)
+                .append(room).toHashCode();
     }
 
+    //FIXME: Useless
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -46,7 +47,10 @@ public class ClassData {
             return false;
         }
         ClassData rhs = ((ClassData) other);
-        return new EqualsBuilder().append(className, rhs.className).append(teacher, rhs.teacher).append(room, rhs.room).isEquals();
+        return new EqualsBuilder()
+                .append(className, rhs.className)
+                .append(teacher, rhs.teacher)
+                .append(room, rhs.room).isEquals();
     }
 
 }

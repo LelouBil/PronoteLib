@@ -8,8 +8,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.leloubil.pronotelib.data.Cour;
-import net.leloubil.pronotelib.data.EDT;
+import net.leloubil.pronotelib.entities.Cour;
+import net.leloubil.pronotelib.entities.EDT;
 import okhttp3.*;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
@@ -39,8 +39,8 @@ import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
 @SuppressWarnings("unchecked")
 public class ObjetCommunication {
 
-    public static EDT getEmploiDuTemps(int semaine){
-        JsonNode jsonedt = navigate("PageEmploiDuTemps",Collections.singletonMap("NumeroSemaine",semaine)).get("donneesSec").get("donnees");
+    public static EDT getEmploiDuTemps(int semaine) {
+        JsonNode jsonedt = navigate("PageEmploiDuTemps", Collections.singletonMap("NumeroSemaine", semaine)).get("donneesSec").get("donnees");
         SimpleModule module =
                 new SimpleModule("LongDeserializerModule",
                         new Version(1, 0, 0, null, null, null));
@@ -48,7 +48,7 @@ public class ObjetCommunication {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(module);
         try {
-            EDT edt = om.treeToValue(jsonedt,EDT.class);
+            EDT edt = om.treeToValue(jsonedt, EDT.class);
             return edt;
         } catch (JsonProcessingException e) {
             e.printStackTrace();
@@ -58,44 +58,44 @@ public class ObjetCommunication {
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
     public static String cookie = "";
-    private static Map<String,Integer> Onglets = Stream.of(new Object[][] {
-            { "PageAccueil", 7 },
-            { "PageCahierDeTexte", 89 },
-            {"PageEmploiDuTemps", 16 }
-    }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));;
+    private static Map<String, Integer> Onglets = Stream.of(new Object[][]{
+            {"PageAccueil", 7},
+            {"PageCahierDeTexte", 89},
+            {"PageEmploiDuTemps", 16}
+    }).collect(Collectors.toMap(data -> (String) data[0], data -> (Integer) data[1]));
 
-    public static JsonNode appelFonction(String foncName){
-        return appelFonction(foncName,new HashMap<>());
+    public static JsonNode appelFonction(String foncName) {
+        return appelFonction(foncName, new HashMap<>());
     }
 
-    public static HashMap<String,Object> getDate(){
+    public static HashMap<String, Object> getDate() {
         Date d = new Date();
         SimpleDateFormat format = new SimpleDateFormat("dd/mm/yyyy");
-        String f = format.format(d) +" 0:0:0";
+        String f = format.format(d) + " 0:0:0";
         HashMap out = new HashMap();
-        out.put("_T",7);
-        out.put("V",f);
+        out.put("_T", 7);
+        out.put("V", f);
         return out;
     }
 
-    public static void identificate(String user, String pass){
+    public static void identificate(String user, String pass) {
         ObjetCommunication.init();
         HashMap m = new HashMap();
-        m.put("genreConnexion",0);
-        m.put("genreEspace",3);
-        m.put("identifiant",user);
-        m.put("pourENT",false);
-        m.put("enConnexionAuto",false);
-        m.put("demandeConnexionAUto",false);
-        m.put("enConnexionAppliMobile",false);
-        m.put("demandeConnexionAppliMobile",false);
-        m.put("demandeConnexionAppliMobileJeton",false);
-        m.put("uuidAppliMobile","");
-        m.put("loginTokenSAV","");
-        JsonNode result = appelFonction("Identification",m).get("donneesSec").get("donnees");
+        m.put("genreConnexion", 0);
+        m.put("genreEspace", 3);
+        m.put("identifiant", user);
+        m.put("pourENT", false);
+        m.put("enConnexionAuto", false);
+        m.put("demandeConnexionAUto", false);
+        m.put("enConnexionAppliMobile", false);
+        m.put("demandeConnexionAppliMobile", false);
+        m.put("demandeConnexionAppliMobileJeton", false);
+        m.put("uuidAppliMobile", "");
+        m.put("loginTokenSAV", "");
+        JsonNode result = appelFonction("Identification", m).get("donneesSec").get("donnees");
 
-        if(result == null) return;
-        if(result.get("Erreur") != null){
+        if (result == null) return;
+        if (result.get("Erreur") != null) {
             System.out.println("Trop d'erreurs");
             return;
         }
@@ -103,7 +103,7 @@ public class ObjetCommunication {
         int mdpGenre = result.get("modeCompMdp").asInt();
         String alea = result.get("alea").asText();
         String challenge = result.get("challenge").asText();
-        doChallenge(user,pass,alea,challenge);
+        doChallenge(user, pass, alea, challenge);
         auth = true;
         getAcceuil();
     }
@@ -115,52 +115,52 @@ public class ObjetCommunication {
 
     public static boolean auth = false;
 
-    public static JsonNode navigate(String page,Map<String,Object> content) {
+    public static JsonNode navigate(String page, Map<String, Object> content) {
         HashMap m = new HashMap();
         int o = Onglets.get(page);
-        m.put("onglet",o);
-        m.put("ongletPrec",last);
-        appelFonction("Navigation",m);
+        m.put("onglet", o);
+        m.put("ongletPrec", last);
+        appelFonction("Navigation", m);
         last = o;
-        return appelFonction(page,content);
+        return appelFonction(page, content);
     }
 
     public static JsonNode navigate(String page) {
         HashMap m = new HashMap();
-        m.put("onglet",Onglets.get(page));
-        m.put("ongletPrec",last);
-        appelFonction("Navigation",m);
+        m.put("onglet", Onglets.get(page));
+        m.put("ongletPrec", last);
+        appelFonction("Navigation", m);
         return appelFonction(page);
     }
 
-    public static HashMap<String,String> cookies = new HashMap<>();
+    public static HashMap<String, String> cookies = new HashMap<>();
 
     public static String cookieName = "CASTGC";
 
 
-    private static void doChallenge(String user, String mdp,String alea,String challenge) {
+    private static void doChallenge(String user, String mdp, String alea, String challenge) {
         HashMap m = new HashMap();
-        m.put("connexion",0);
-        m.put("espace",3);
-        String key = user + hashPass(mdp,alea);
+        m.put("connexion", 0);
+        m.put("espace", 3);
+        String key = user + hashPass(mdp, alea);
         byte[] out = new byte[0];
         try {
             System.out.println(challenge);
-            out = decryptaes(Hex.decodeHex(challenge),key.getBytes(StandardCharsets.UTF_8),iv);
+            out = decryptaes(Hex.decodeHex(challenge), key.getBytes(StandardCharsets.UTF_8), iv);
         } catch (DecoderException e) {
             e.printStackTrace();
         }
         String outt = removealea(decode(out));
-        String finalchal = Hex.encodeHexString(encryptaes(encode(outt),key.getBytes(),iv));
-        m.put("challenge",finalchal);
-        JsonNode result = appelFonction("Authentification",m).get("donneesSec").get("donnees");
-        if(result.get("Acces") != null){
+        String finalchal = Hex.encodeHexString(encryptaes(encode(outt), key.getBytes(), iv));
+        m.put("challenge", finalchal);
+        JsonNode result = appelFonction("Authentification", m).get("donneesSec").get("donnees");
+        if (result.get("Acces") != null) {
             System.out.println("Erreur d'authentitifaction");
             return;
         }
         try {
             numeroOrdre = 5;
-            ObjetCommunication.key = debyte(decryptaes(Hex.decodeHex(result.get("cle").asText()),key.getBytes(StandardCharsets.UTF_8),iv));
+            ObjetCommunication.key = debyte(decryptaes(Hex.decodeHex(result.get("cle").asText()), key.getBytes(StandardCharsets.UTF_8), iv));
             incnum();
         } catch (DecoderException e) {
             e.printStackTrace();
@@ -169,7 +169,7 @@ public class ObjetCommunication {
 
     }
 
-    public static byte[]debyte(byte[] b){
+    public static byte[] debyte(byte[] b) {
         String s = new String(b);
         String[] arr = s.split(",");
         byte[] out = new byte[arr.length];
@@ -184,29 +184,28 @@ public class ObjetCommunication {
         byte[] data = new byte[len / 2];
         for (int i = 0; i < len; i += 2) {
             data[i / 2] = (byte) ((Character.digit(s.charAt(i), 16) << 4)
-                    + Character.digit(s.charAt(i+1), 16));
+                    + Character.digit(s.charAt(i + 1), 16));
         }
         return data;
     }
 
-    public static String decode(byte[] bytes){
-        return new String(bytes,StandardCharsets.UTF_8);
+    public static String decode(byte[] bytes) {
+        return new String(bytes, StandardCharsets.UTF_8);
     }
 
-    public static byte[] encode(String bytes){
+    public static byte[] encode(String bytes) {
         return bytes.getBytes(StandardCharsets.UTF_8);
     }
 
     private static String removealea(String st) {
         StringBuilder s = new StringBuilder();
         for (int i = 0; i < st.length(); i++) {
-            if(i% 2 == 0) s.append(st.charAt(i));
+            if (i % 2 == 0) s.append(st.charAt(i));
         }
         return s.toString();
     }
 
-    public static int getBit(byte b, int position)
-    {
+    public static int getBit(byte b, int position) {
         return (b >> position) & 1;
     }
 
@@ -216,7 +215,7 @@ public class ObjetCommunication {
             passdigest = MessageDigest.getInstance(SHA_256);
             passdigest.update(alea.getBytes());
             passdigest.update(mdp.getBytes(StandardCharsets.UTF_8));
-            return Hex.encodeHexString(passdigest.digest(),false);
+            return Hex.encodeHexString(passdigest.digest(), false);
         } catch (NoSuchAlgorithmException e) {
             e.printStackTrace();
         }
@@ -224,22 +223,22 @@ public class ObjetCommunication {
         return null;
     }
 
-    public static JsonNode appelFonction(String foncName, Map<String,Object> data){
+    public static JsonNode appelFonction(String foncName, Map<String, Object> data) {
         try {
             final JsonNodeFactory factory = JsonNodeFactory.instance;
             ObjectMapper om = new ObjectMapper();
-            JsonNode json = om.valueToTree(new CoreData(foncName,strnum,session));
-            ((ObjectNode)json).set("donneesSec",factory.objectNode().set("donnees",om.valueToTree(data)));
-            if(auth){
-                ((ObjectNode) json.get("donneesSec")).set("_Signature_",factory.objectNode().set("onglet",factory.numberNode(last)));
+            JsonNode json = om.valueToTree(new CoreData(foncName, strnum, session));
+            ((ObjectNode) json).set("donneesSec", factory.objectNode().set("donnees", om.valueToTree(data)));
+            if (auth) {
+                ((ObjectNode) json.get("donneesSec")).set("_Signature_", factory.objectNode().set("onglet", factory.numberNode(last)));
             }
             String finjs = om.writerWithDefaultPrettyPrinter().writeValueAsString(json);
             System.out.println("Request : " + finjs);
-            Request r = new Request.Builder().url(API + session + "/" + strnum).header("Cookie",cookieName + "=" + cookie)
-                    .post(RequestBody.create(finjs,JSON)).build();
+            Request r = new Request.Builder().url(API + session + "/" + strnum).header("Cookie", cookieName + "=" + cookie)
+                    .post(RequestBody.create(finjs, JSON)).build();
 
             Response res = client.newCall(r).execute();
-            if(!res.headers("Set-Cookie").isEmpty()){
+            if (!res.headers("Set-Cookie").isEmpty()) {
                 cookie = res.headers("Set-Cookie").get(0).split("=")[1].split(";")[0];
             }
             om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
@@ -256,7 +255,7 @@ public class ObjetCommunication {
     }
 
     private static void incnum() {
-        numeroOrdre+= 2;
+        numeroOrdre += 2;
         try {
             strnum = getNumber();
         } catch (BadPaddingException | IllegalBlockSizeException | InvalidKeyException | NoSuchPaddingException | NoSuchAlgorithmException | InvalidAlgorithmParameterException e) {
@@ -266,14 +265,14 @@ public class ObjetCommunication {
 
     public static String strnum;
 
-    public static void init(){
+    public static void init() {
         ObjetCommunication.getMainData();
         try {
             ObjetCommunication.computeEncryption();
-           strnum = ObjetCommunication.getNumber();
-            HashMap<String,Object> s = new HashMap<>();
-            s.put("Uuid",ObjetCommunication.UUID);
-            ObjetCommunication.appelFonction("FonctionParametres",s);
+            strnum = ObjetCommunication.getNumber();
+            HashMap<String, Object> s = new HashMap<>();
+            s.put("Uuid", ObjetCommunication.UUID);
+            ObjetCommunication.appelFonction("FonctionParametres", s);
         } catch (NoSuchAlgorithmException | InvalidKeyException | NoSuchPaddingException | BadPaddingException | IllegalBlockSizeException | InvalidAlgorithmParameterException | InvalidKeySpecException e) {
             e.printStackTrace();
         }
@@ -285,7 +284,7 @@ public class ObjetCommunication {
         try {
             Response response = client.newCall(r).execute();
             Matcher matcher = regex.matcher(response.body().string());
-            if(!matcher.find()){
+            if (!matcher.find()) {
                 return;
             }
             String params = matcher.group(2);
@@ -293,7 +292,7 @@ public class ObjetCommunication {
             om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
             om.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
             Map<String, Object> map = om.readValue(params, Map.class);
-            session =  Integer.parseInt((String) map.get("h"));
+            session = Integer.parseInt((String) map.get("h"));
             genreEspace = (Integer) map.get("a");
             MR = (String) map.get("MR");
             ER = (String) map.get("ER");
@@ -309,12 +308,12 @@ public class ObjetCommunication {
         //modulo => MR, 16
         //exposant => ER, 16
 
-        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(new BigInteger(MR,16),new BigInteger(ER,16));
+        RSAPublicKeySpec keySpec = new RSAPublicKeySpec(new BigInteger(MR, 16), new BigInteger(ER, 16));
         KeyFactory factory = KeyFactory.getInstance("RSA");
         PublicKey pub = factory.generatePublic(keySpec);
         rndiv = new byte[16];
         new Random().nextBytes(rndiv);
-        UUID = Base64.getEncoder().encodeToString(encrypt(rndiv,pub));
+        UUID = Base64.getEncoder().encodeToString(encrypt(rndiv, pub));
         byte[] data = pub.getEncoded();
         String base64encoded = Base64.getEncoder().encodeToString(data);
         iv = rndiv;
@@ -330,29 +329,27 @@ public class ObjetCommunication {
 
     public static String striv = null;
 
-    public static byte[] decryptaes(byte[] plaintext,byte[] key, byte[] ivv){
+    public static byte[] decryptaes(byte[] plaintext, byte[] key, byte[] ivv) {
         try {
-            IvParameterSpec iv =new IvParameterSpec(MessageDigest.getInstance(MD5).digest(ivv));
+            IvParameterSpec iv = new IvParameterSpec(MessageDigest.getInstance(MD5).digest(ivv));
             SecretKeySpec keySpec = new SecretKeySpec(MessageDigest.getInstance(MD5).digest(key), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.DECRYPT_MODE, keySpec, iv);
             return cipher.doFinal(plaintext);
-        }
-        catch (Exception e){
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
     }
 
-    public static byte[] encryptaes(byte[] plaintext,byte[] key, byte[] ivv){
+    public static byte[] encryptaes(byte[] plaintext, byte[] key, byte[] ivv) {
         try {
-            IvParameterSpec iv =new IvParameterSpec(MessageDigest.getInstance(MD5).digest(ivv));
+            IvParameterSpec iv = new IvParameterSpec(MessageDigest.getInstance(MD5).digest(ivv));
             SecretKeySpec keySpec = new SecretKeySpec(MessageDigest.getInstance(MD5).digest(key), "AES");
             Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
             cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
-            return  cipher.doFinal(plaintext);
-        }
-        catch (Exception e){
+            return cipher.doFinal(plaintext);
+        } catch (Exception e) {
             e.printStackTrace();
             return null;
         }
@@ -364,12 +361,13 @@ public class ObjetCommunication {
         byte[] rndiv = MessageDigest.getInstance(MD5).digest(ObjetCommunication.rndiv);
         iv = new IvParameterSpec(numeroOrdre > 1 ? rndiv : new byte[16]);
         byte[] key = ObjetCommunication.key;
-        SecretKeySpec keySpec = new SecretKeySpec(MessageDigest.getInstance(MD5).digest(key),"AES");
+        SecretKeySpec keySpec = new SecretKeySpec(MessageDigest.getInstance(MD5).digest(key), "AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");
         cipher.init(Cipher.ENCRYPT_MODE, keySpec, iv);
         byte[] encrypted = cipher.doFinal(plaintext);
-        return Hex.encodeHexString(encrypted,true);
+        return Hex.encodeHexString(encrypted, true);
     }
+
     public static byte[] key = "".getBytes();
     public static Integer numeroOrdre = 1;
 
@@ -399,6 +397,6 @@ public class ObjetCommunication {
 
     public static void setUrl(String url) {
         URL = url;
-        API = url.replace("eleve.html","appelfonction/3/");
+        API = url.replace("eleve.html", "appelfonction/3/");
     }
 }

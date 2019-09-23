@@ -9,7 +9,7 @@ public class CoreData {
     public long session;
 
 
-    public CoreData( String numeroOrdre, long session) {
+    public CoreData(String numeroOrdre, long session) {
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
@@ -19,7 +19,8 @@ public class CoreData {
         this.numeroOrdre = numeroOrdre;
         this.session = session;
     }
-    public CoreData(){
+
+    public CoreData() {
 
     }
 }

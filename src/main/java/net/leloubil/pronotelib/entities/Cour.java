@@ -1,11 +1,10 @@
-package net.leloubil.pronotelib.data;
+package net.leloubil.pronotelib.entities;
 
-import java.io.IOException;
-import java.util.*;
-
-import com.fasterxml.jackson.annotation.*;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.annotation.JsonPropertyOrder;
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.DeserializationContext;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -15,6 +14,9 @@ import net.leloubil.pronotelib.ObjetCommunication;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
+
+import java.io.IOException;
+import java.util.*;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -44,19 +46,22 @@ public class Cour {
     private Integer place; //todo
     @JsonProperty("duree")
     private int duree;
-    @JsonProperty("DateDuCours") @JsonDeserialize(using = DateDeserializer.class)
+    @JsonProperty("DateDuCours")
+    @JsonDeserialize(using = DateDeserializer.class)
     private Date dateDuCours;
     @JsonProperty("CouleurFond")
     private String couleurFond;
     private ClassData classData;
     @JsonProperty("AvecTafPublie")
     private boolean avecDevoirs;
-    @JsonProperty("cahierDeTextes") @JsonDeserialize(using = CDTDeser.class)
+    @JsonProperty("cahierDeTextes")
+    @JsonDeserialize(using = CDTDeser.class)
     private String devoirId;
     @JsonProperty("Statut")
     private String statut;
     @JsonProperty("estAnnule")
     private boolean estAnnule;
+
     @JsonProperty("N")
     public String getId() {
         return id;
@@ -78,12 +83,10 @@ public class Cour {
     }
 
 
-
     @JsonProperty("place")
     public Integer getPlace() {
         return place;
     }
-
 
 
     @JsonProperty("duree")
@@ -140,6 +143,7 @@ public class Cour {
         return new HashCodeBuilder().append(g).append(statut).append(devoirId).append(id).append(avecDevoirs).append(dateDuCours).append(p).append(estAnnule).append(couleurFond).append(duree).append(place).append(classData).toHashCode();
     }
 
+    //FIXME: Useless
     @Override
     public boolean equals(Object other) {
         if (other == this) {
@@ -153,17 +157,22 @@ public class Cour {
     }
 
     public static class CDTDeser extends StdDeserializer<String> {
+        public CDTDeser() {
+            super(String.class);
+        }
+
         @Override
-        public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException, JsonProcessingException {
+        public String deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode n = p.getCodec().readTree(p);
             return n.get("V").asText();
         }
-
-
-        public CDTDeser(){super(String.class);}
     }
 
     public static class CoursDeserializer extends StdDeserializer<Cour> {
+        public CoursDeserializer() {
+            super(Cour.class);
+        }
+
         @Override
         public Cour deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode node = p.getCodec().readTree(p);
@@ -178,29 +187,26 @@ public class Cour {
             om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
             om.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
             Map map = om.readValue(json, Map.class);
-            map.put("cours", Collections.singletonMap("N",id));
-            Cour c = om.treeToValue(node,Cour.class);
-            JsonNode cour = ObjetCommunication.appelFonction("FicheCours",map).get("donneesSec").get("donnees");
+            map.put("cours", Collections.singletonMap("N", id));
+            Cour c = om.treeToValue(node, Cour.class);
+            JsonNode cour = ObjetCommunication.appelFonction("FicheCours", map).get("donneesSec").get("donnees");
             cour = cour.get("listeCours").get("V").get(0);
 
             c.avecDevoirs = cour.get("avecCDT").asBoolean();
             ClassData d = new ClassData();
             d.className = cour.get("matiere").get("V").get("L").asText();
             d.teacher = cour.get("ListeContenus").get("V").get(0).get("L").asText();
-            if(cour.get("ListeContenus").get("V").size() >= 2) d.room = cour.get("ListeContenus").get("V").get(1).get("L").asText();
+            if (cour.get("ListeContenus").get("V").size() >= 2)
+                d.room = cour.get("ListeContenus").get("V").get(1).get("L").asText();
             c.classData = d;
-            String date = cour.get("DateDuCours").get("V").asText().replace("\\","");
+            String date = cour.get("DateDuCours").get("V").asText().replace("\\", "");
 
             String[] day = date.split(" ")[0].split("/");
             String[] hour = date.split(" ")[1].split(":");
 
-            Calendar ca = new GregorianCalendar(Integer.parseInt(day[2]),Integer.parseInt(day[1]),Integer.parseInt(day[0]),Integer.parseInt(hour[0]),Integer.parseInt(hour[1]),Integer.parseInt(hour[2]));
+            Calendar ca = new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
             c.dateDuCours = ca.getTime();
             return c;
-        }
-
-        public CoursDeserializer(){
-            super(Cour.class);
         }
     }
 }
