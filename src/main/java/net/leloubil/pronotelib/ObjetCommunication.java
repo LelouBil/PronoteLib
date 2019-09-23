@@ -335,8 +335,7 @@ public class ObjetCommunication {
     private String getNumber() throws BadPaddingException, IllegalBlockSizeException, InvalidKeyException, NoSuchPaddingException, NoSuchAlgorithmException, InvalidAlgorithmParameterException {
         byte[] plaintext = numeroOrdre.toString().getBytes();
         IvParameterSpec iva;
-        byte[] rndiv = MessageDigest.getInstance(MD5).digest(iv);
-        iva = new IvParameterSpec(numeroOrdre > 1 ? iv : new byte[16]);
+        iva = new IvParameterSpec(numeroOrdre > 1 ? MessageDigest.getInstance(MD5).digest(iv) : new byte[16]);
         byte[] key = this.key;
         SecretKeySpec keySpec = new SecretKeySpec(MessageDigest.getInstance(MD5).digest(key),"AES");
         Cipher cipher = Cipher.getInstance("AES/CBC/PKCS5Padding");

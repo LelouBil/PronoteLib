@@ -1,5 +1,6 @@
 package net.leloubil.pronotelib;
 
+import org.junit.Assert;
 import org.junit.Test;
 import static org.junit.Assert.*;
 
@@ -12,6 +13,6 @@ public class TestObjetCommunication{
 	@Test
 	public void connectTest(){
 		ObjetCommunication obj = new ObjetCommunication(url);
-		assert(obj.identificate(user,pass));
+		assertTrue("connexion",obj.identificate(user,pass));
 	}
 }
