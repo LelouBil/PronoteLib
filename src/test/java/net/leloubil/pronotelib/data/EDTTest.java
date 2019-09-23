@@ -16,6 +16,7 @@ public class EDTTest {
         assertTrue("connexion",comm.identificate(TestObjetCommunication.user,TestObjetCommunication.pass));
         EDT t = comm.getEmploiDuTemps(1);
 	    checkNull(t);
+        System.out.println(t.toString());
     }
 
     public void checkNull(Object o) throws IllegalAccessException{
