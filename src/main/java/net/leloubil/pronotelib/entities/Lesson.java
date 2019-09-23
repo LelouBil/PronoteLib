@@ -183,8 +183,11 @@ public class Lesson {
     }
 
     public static class LessonDeserializer extends StdDeserializer<Lesson> {
-        public LessonDeserializer() {
+
+        private ObjetCommunication link;
+        public LessonDeserializer(ObjetCommunication obj) {
             super(Lesson.class);
+            link = obj;
         }
 
         @Override

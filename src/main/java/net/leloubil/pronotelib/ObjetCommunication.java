@@ -49,7 +49,7 @@ public class ObjetCommunication {
         SimpleModule module =
                 new SimpleModule("LongDeserializerModule",
                         new Version(1, 0, 0, null, null, null));
-        module.addDeserializer(Lesson.class, new Lesson.LessonDeserializer());
+        module.addDeserializer(Lesson.class, new Lesson.LessonDeserializer(this));
         ObjectMapper om = new ObjectMapper();
         om.registerModule(module);
         try {
