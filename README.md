@@ -123,9 +123,13 @@ Pour se connecter au serveur :
 ```Java
 PronoteConnection obj = new PronoteConnection(url);
 obj.login(user,pass);
-EDT emploidutemps = obj.getEmploiDuTemps(numerosemaine);
 ```
 
+Pour récuperer l'emploi du temps:
+
+```Java
+EDT emploidutemps = obj.getEmploiDuTemps(numerosemaine);
+```
 ou url est le lien vers la page élève du serveur PRONOTE
 ex : https://demo.index-education.net/pronote/eleve.html
 
