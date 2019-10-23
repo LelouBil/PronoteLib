@@ -118,11 +118,13 @@ dependencies {
 <!-- USAGE EXAMPLES -->
 ## Usage
 
-L'API n'est pas utilisable en tant que bibliothèque  pour l'instant, mais vous pouvez la tester de cette manière :  
-  
-``sh
-java -jar PronoteLib.jar <url> <identifiant> <motdepasse>
-``  
+Pour se connecter au serveur : 
+
+```Java
+PronoteConnection obj = new PronoteConnection(url);
+obj.login(user,pass);
+EDT emploidutemps = obj.getEmploiDuTemps(1);
+```
 
 ou url est le lien vers la page élève du serveur PRONOTE
 ex : https://demo.index-education.net/pronote/eleve.html
