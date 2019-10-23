@@ -22,7 +22,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings("unchecked")
+@SuppressWarnings({"unchecked", "SameParameterValue","UnusedReturnValue"})
 public class PronoteConnection {
 
     AuthManager authManager = new AuthManager(this);
@@ -58,10 +58,7 @@ public class PronoteConnection {
 
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    private JsonNode appelFonction(String foncName) {
-        return appelFonction(foncName, new HashMap<>());
-    }
-
+    @SuppressWarnings("unused")
     public enum PagesType {
         PageAccueil(7),
         PageCahierDeTexte(89),
@@ -115,7 +112,7 @@ public class PronoteConnection {
 
 
 
-    private JsonNode navigate(PagesType page, Map<String, Object> content) throws PronoteException {
+    private JsonNode navigate(@SuppressWarnings("SameParameterValue") PagesType page, Map<String, Object> content) throws PronoteException {
 	HashMap m = new HashMap();
         m.put("onglet",page.getId());
         m.put("ongletPrec", last);
@@ -131,7 +128,6 @@ public class PronoteConnection {
         return n;
     }
 
-
     private JsonNode navigate(@NotNull PagesType page) {
         HashMap m = new HashMap();
         m.put("onglet", page.getId());
@@ -140,6 +136,10 @@ public class PronoteConnection {
         return appelFonction(page.name());
     }
 
+
+    private JsonNode appelFonction(String foncName) {
+        return appelFonction(foncName, new HashMap<>());
+    }
 
     public JsonNode appelFonction(String foncName, Map<String, Object> data) {
         try {
