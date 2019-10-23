@@ -27,7 +27,7 @@
 ![GitHub last commit](https://img.shields.io/github/last-commit/LelouBil/PronoteLib?style=flat-square)
 ![Github latest release](https://flat.badgen.net/github/release/lelouBil/PronoteLib)
 ![Discord](https://img.shields.io/badge/Discord-LelouBil%239388-%237289DA?style=flat-square&logo=discord)
-[![JitCI](https://jitci.com/gh/LelouBil/PronoteLib/svg)](https://jitci.com/gh/LelouBil/PronoteLib)
+[![Travis](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
 <br />
 <p align="center">
