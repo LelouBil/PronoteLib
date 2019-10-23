@@ -16,7 +16,7 @@ test{
     useJUnit()
 }
 dependencies {
-    implementation("com.squareup.okhttp3:okhttp:4.1.0")
+    implementation("com.squareup.okhttp3:okhttp:4.2.2")
     compile 'org.apache.commons:commons-lang3:3.9'
     compile "com.fasterxml.jackson.core:jackson-databind:2.9.8"
     compile 'commons-codec:commons-codec:1.13'
