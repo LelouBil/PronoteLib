@@ -5,7 +5,6 @@
 ### Eclipse ###
 .metadata
 bin/
-tmp/
 *.tmp
 *.bak
 *.swp
@@ -73,8 +72,6 @@ local.properties
 
 ### Java ###
 # Compiled class file
-*.class
-
 # Log file
 *.log
 
@@ -106,6 +103,7 @@ hs_err_pid*
 .idea/**/usage.statistics.xml
 .idea/**/dictionaries
 .idea/**/shelf
+.idea/hotswap_agent.xml
 
 # Generated files
 .idea/**/contentModel.xml
@@ -194,8 +192,6 @@ gradle-app.setting
 # gradle/wrapper/gradle-wrapper.properties
 
 ### Gradle Patch ###
-**/build/
-
 ###User-added
 .idea/discord.xml
 .idea/hotswap-agent.xml
@@ -203,3 +199,4 @@ gradle-app.setting
 .idea/$PRODUCT_WORKSPACE_FILE$
 
 # End of https://www.gitignore.io/api/java,gradle,eclipse,jetbrains
+

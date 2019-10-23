@@ -15,16 +15,19 @@ public class DateDeserializer extends StdDeserializer<Date> {
         super(Date.class);
     }
 
+    private static Calendar getCalendar(String date) {
+        String[] day = date.split(" ")[0].split("/");
+        String[] hour = date.split(" ")[1].split(":");
+        //noinspection MagicConstant
+        return new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
+    }
+
     @Override
     public Date deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
         JsonNode n = p.getCodec().readTree(p);
 
         String date = n.get("V").asText().replace("\\", "");
 
-        String[] day = date.split(" ")[0].split("/");
-        String[] hour = date.split(" ")[1].split(":");
-
-        Calendar c = new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
-        return c.getTime();
+        return getCalendar(date).getTime();
     }
 }
