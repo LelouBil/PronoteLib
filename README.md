@@ -51,7 +51,6 @@
     ·
     <a href="https://github.com/LelouBil/PronoteLib/issues">Proposer une fonctionnalité</a>
   </p>
-</p>
 
 
 
