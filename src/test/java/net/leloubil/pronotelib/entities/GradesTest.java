@@ -1,13 +1,13 @@
 package net.leloubil.pronotelib.entities;
 
 import net.leloubil.pronotelib.PronoteConnection;
+import net.leloubil.pronotelib.TestPronotConnection;
 import org.junit.Test;
+
 import java.lang.reflect.Field;
 
-import com.fasterxml.jackson.databind.JsonNode;
-
-import static org.junit.Assert.*;
-import net.leloubil.pronotelib.TestPronotConnection;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 
 public class GradesTest {
@@ -16,9 +16,9 @@ public class GradesTest {
     public void GetGradesTest() throws IllegalAccessException{
 	PronoteConnection comm = new PronoteConnection(TestPronotConnection.url);
         assertTrue("connexion",comm.login(TestPronotConnection.user, TestPronotConnection.pass));
-        JsonNode t = comm.getGrades("Trimestre 1");
+        GradeData t = comm.getGrades("Trimestre 1");
 	    //checkNull(t);
-        System.out.println(t.toString());
+        System.out.println(t);
     }
 
     private void checkNull(Object o) throws IllegalAccessException{

@@ -16,10 +16,16 @@ public class DateDeserializer extends StdDeserializer<Date> {
     }
 
     private static Calendar getCalendar(String date) {
-        String[] day = date.split(" ")[0].split("/");
-        String[] hour = date.split(" ")[1].split(":");
-        //noinspection MagicConstant
-        return new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
+        String[] splat = date.split(" ");
+        String[] day = splat[0].split("/");
+        if (splat.length == 2) {
+            String[] hour = date.split(" ")[1].split(":");
+            //noinspection MagicConstant
+            return new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]), Integer.parseInt(hour[0]), Integer.parseInt(hour[1]), Integer.parseInt(hour[2]));
+        } else {
+            //noinspection MagicConstant
+            return new GregorianCalendar(Integer.parseInt(day[2]), Integer.parseInt(day[1]), Integer.parseInt(day[0]));
+        }
     }
 
     @Override

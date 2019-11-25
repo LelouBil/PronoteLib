@@ -8,9 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import net.leloubil.pronotelib.entities.DateDeserializer;
-import net.leloubil.pronotelib.entities.EDT;
-import net.leloubil.pronotelib.entities.Lesson;
+import net.leloubil.pronotelib.entities.*;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
@@ -25,19 +23,53 @@ import java.util.regex.Pattern;
 @SuppressWarnings({"unchecked", "SameParameterValue","UnusedReturnValue"})
 public class PronoteConnection {
 
+    public static SimpleModule staticModule = new SimpleModule();
+
+    static {
+        staticModule.addDeserializer(double.class, new PronoteDataDeserialiser<>(double.class));
+        staticModule.addDeserializer(String.class, new PronoteDataDeserialiser<>(String.class));
+        staticModule.addDeserializer(Date.class, new DateDeserializer());
+    }
+
+    public SimpleModule deserModule;
+
     AuthManager authManager = new AuthManager(this);
 
     private SessionManager sessionManager;
 
     public PronoteConnection(String url){
+        deserModule =
+                new SimpleModule("DeserializingModule",
+                        new Version(1, 0, 0, null, null, null));
+        Lesson.LessonDeserializer des = new Lesson.LessonDeserializer(this);
+        deserModule.addDeserializer(Lesson.class, des);
+        ObjectMapper om = new ObjectMapper();
+        deserModule.addDeserializer(Date.class, new DateDeserializer());
+        //deserModule.addDeserializer(List.class,new MatiereList(this));
+        deserModule.addDeserializer(String.class, new PronoteDataDeserialiser<>(String.class));
+        deserModule.addDeserializer(double.class, new PronoteDataDeserialiser<>(double.class));
+        //deserModule.addDeserializer(List.class, new PronoteDataDeserialiser<>(List.class));
 	    this.setUrl(url);
     }
 
-    public JsonNode getGrades(String periode){
+    public GradeData getGrades(String periode) {
         try{
             JsonNode gradesJson = navigate(PagesType.DernieresNotes,Collections.singletonMap("Periode", Collections.singletonMap("L", periode)));
-            return gradesJson;
+            GradeData gradeData = deserialize(gradesJson, GradeData.class);
+            return gradeData;
         } catch (PronoteException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
+    private <T> T deserialize(JsonNode node, Class<T> dataClass) {
+        ObjectMapper om = new ObjectMapper();
+        om.registerModule(deserModule);
+        try {
+            if (node.get("donneesSec") != null) node = node.get("donneesSec").get("donnees");
+            return om.treeToValue(node, dataClass);
+        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
@@ -47,20 +79,8 @@ public class PronoteConnection {
         JsonNode jsonedt;
         try {
             jsonedt = navigate(PagesType.PageEmploiDuTemps, Collections.singletonMap("NumeroSemaine", semaine)).get("donneesSec").get("donnees");
+            return deserialize(jsonedt, EDT.class);
         } catch (PronoteException e) {
-            e.printStackTrace();
-            return null;
-        }
-        SimpleModule module =
-                new SimpleModule("LongDeserializerModule",
-                        new Version(1, 0, 0, null, null, null));
-        module.addDeserializer(Lesson.class, new Lesson.LessonDeserializer(this));
-        module.addDeserializer(Date.class,new DateDeserializer());
-        ObjectMapper om = new ObjectMapper();
-        om.registerModule(module);
-        try {
-            return om.treeToValue(jsonedt, EDT.class);
-        } catch (JsonProcessingException e) {
             e.printStackTrace();
             return null;
         }
