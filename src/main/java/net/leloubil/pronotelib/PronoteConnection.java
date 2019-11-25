@@ -33,6 +33,16 @@ public class PronoteConnection {
 	    this.setUrl(url);
     }
 
+    public JsonNode getGrades(String periode){
+        try{
+            JsonNode gradesJson = navigate(PagesType.DernieresNotes,Collections.singletonMap("Periode", Collections.singletonMap("L", periode)));
+            return gradesJson;
+        } catch (PronoteException e){
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     public EDT getEmploiDuTemps(int semaine) {
         JsonNode jsonedt;
         try {
@@ -62,7 +72,8 @@ public class PronoteConnection {
     public enum PagesType {
         PageAccueil(7),
         PageCahierDeTexte(89),
-        PageEmploiDuTemps(16);
+        PageEmploiDuTemps(16),
+        DernieresNotes(198);
 
         PagesType(int id){
             this.id = id;
