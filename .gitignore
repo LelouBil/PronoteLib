@@ -11,6 +11,7 @@ bin/
 *~.nib
 local.properties
 .settings/
+.theia/
 .loadpath
 .recommenders
 

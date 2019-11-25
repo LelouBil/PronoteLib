@@ -80,7 +80,7 @@ public class PronoteConnection {
     }
 
     private boolean requestAuth(String user, String pass) {
-        HashMap m = new HashMap();
+        HashMap<String,Object> m = new HashMap<>();
         m.put("genreConnexion", 0);
         m.put("genreEspace", 3);
         m.put("identifiant", user);
@@ -113,7 +113,7 @@ public class PronoteConnection {
 
 
     private JsonNode navigate(@SuppressWarnings("SameParameterValue") PagesType page, Map<String, Object> content) throws PronoteException {
-	HashMap m = new HashMap();
+	HashMap<String,Object> m = new HashMap<>();
         m.put("onglet",page.getId());
         m.put("ongletPrec", last);
         appelFonction("Navigation", m);
@@ -129,7 +129,7 @@ public class PronoteConnection {
     }
 
     private JsonNode navigate(@NotNull PagesType page) {
-        HashMap m = new HashMap();
+        HashMap<String,Object> m = new HashMap<>();
         m.put("onglet", page.getId());
         m.put("ongletPrec", last);
         appelFonction("Navigation", m);
