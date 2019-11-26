@@ -18,7 +18,7 @@ public class GradesTest {
         assertTrue("connexion",comm.login(TestPronotConnection.user, TestPronotConnection.pass));
         GradeData t = comm.getGrades("Trimestre 1");
 	    //checkNull(t);
-        System.out.println(t);
+        System.out.println(t.getListeDevoirs().get(0).getMatiere().getMoyEleve());
     }
 
     private void checkNull(Object o) throws IllegalAccessException{

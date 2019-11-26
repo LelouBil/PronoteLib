@@ -3,6 +3,7 @@ package net.leloubil.pronotelib.entities;
 import com.fasterxml.jackson.annotation.*;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,6 +76,19 @@ public class GradeData {
     @JsonProperty("listeDevoirs")
     public List<Grade> getListeDevoirs() {
         return listeDevoirs;
+    }
+
+    @JsonProperty("listeDevoirs")
+    @JsonSetter
+    private void setListeDevoirs(List<Grade> devoirs) {
+        //System.out.println("setcalled");
+        List<Grade> tempdev = new ArrayList<>();
+        devoirs.forEach(d -> {
+            String matname = d.getMatiere().getName();
+            d.setMatiere(listeServices.stream().filter((Matiere s) -> s.getName().equals(matname)).findFirst().orElse(d.getMatiere()));
+            tempdev.add(d);
+        });
+        this.listeDevoirs = tempdev;
     }
 
 

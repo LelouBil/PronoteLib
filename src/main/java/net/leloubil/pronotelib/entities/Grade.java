@@ -35,7 +35,6 @@ import java.util.Map;
 public class Grade {
 
     @JsonProperty("note")
-    @JsonDeserialize(using = NoteDeserializer.class)
     private double note;
     @JsonProperty("bareme")
     private double bareme;
@@ -130,19 +129,6 @@ public class Grade {
         return this.additionalProperties;
     }
 
-
-    private static class NoteDeserializer extends JsonDeserializer<Double> {
-        public NoteDeserializer() {
-        }
-
-        @Override
-        public Double deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
-            String txt = ((JsonNode) p.getCodec().readTree(p).get("V")).asText();
-            if (txt.startsWith("|")) return -Double.parseDouble(txt.replace("|", ""));
-            else return Double.parseDouble(txt);
-        }
-    }
-
     private static class MatiereDeser extends JsonDeserializer<Matiere> {
         public MatiereDeser() {
         }
@@ -153,5 +139,9 @@ public class Grade {
             om.registerModule(PronoteConnection.staticModule);
             return om.treeToValue(p.getCodec().readTree(p).get("V"), Matiere.class);
         }
+    }
+
+    public void setMatiere(Matiere mat) {
+        this.matiere = mat;
     }
 }

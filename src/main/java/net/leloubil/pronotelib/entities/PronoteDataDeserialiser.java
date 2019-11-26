@@ -26,7 +26,7 @@ public class PronoteDataDeserialiser<T> extends StdDeserializer<T> {
         if (node.isContainerNode() && node.get("L") != null) node = node.get("L");
         String text = node.asText();
         if (tclass == double.class || tclass == float.class) {
-            node = m.valueToTree(text.replace(",", "."));
+            node = m.valueToTree(text.replace(",", ".").replace("|", ""));
         }
         return m.treeToValue(node, tclass);
     }
