@@ -56,7 +56,7 @@ public class Grade {
     @JsonProperty("commentaire")
     private String commentaire;
     @JsonProperty("coefficient")
-    private int coefficient;
+    private double coefficient;
     @JsonIgnore
     private Map<String, Object> additionalProperties = new HashMap<>();
 
@@ -120,7 +120,7 @@ public class Grade {
 
 
     @JsonProperty("coefficient")
-    public Integer getCoefficient() {
+    public Double getCoefficient() {
         return coefficient;
     }
 
