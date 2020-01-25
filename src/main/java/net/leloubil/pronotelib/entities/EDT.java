@@ -3,6 +3,7 @@ package net.leloubil.pronotelib.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.apache.commons.lang3.builder.HashCodeBuilder;
 import org.apache.commons.lang3.builder.ToStringBuilder;
@@ -22,6 +23,7 @@ public class EDT {
     @JsonProperty("prefsGrille")
     private int genreRessource;
     @JsonProperty("ListeCours")
+    @JsonDeserialize(contentAs = Lesson.class)
     private List<Lesson> lessons;
 
     @JsonProperty("avecCoursAnnule")

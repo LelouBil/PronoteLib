@@ -1,6 +1,7 @@
 package net.leloubil.pronotelib;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import net.leloubil.pronotelib.entities.Periode;
 import org.apache.commons.codec.DecoderException;
 import org.apache.commons.codec.binary.Hex;
 
@@ -14,9 +15,7 @@ import java.math.BigInteger;
 import java.nio.charset.StandardCharsets;
 import java.security.*;
 import java.security.spec.RSAPublicKeySpec;
-import java.util.Base64;
-import java.util.HashMap;
-import java.util.Random;
+import java.util.*;
 
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.MD5;
 import static org.apache.commons.codec.digest.MessageDigestAlgorithms.SHA_256;
@@ -103,6 +102,12 @@ class AuthManager {
             String finalChall = encryptaes(outt.getBytes(StandardCharsets.UTF_8),userKey);
             m.put("challenge", finalChall);
             result = obj.appelFonction("Authentification", m).get("donneesSec").get("donnees");
+            JsonNode periodes = result.get("ressource")
+                .get("listeOngletsPourPeriodes")
+                    .get("V").get(0).get("listePeriodes").get("V");
+            List<Periode> plist = new ArrayList<>();
+            periodes.forEach(c -> plist.add(obj.deserialize(c,Periode.class)));
+            obj.periodeList = plist;
         }
         catch(GeneralSecurityException e){
             e.printStackTrace();
