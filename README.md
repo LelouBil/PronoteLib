@@ -107,7 +107,7 @@ dependencies {
 </repositories>
 
 	<dependency>
-    <groupId>com.github.LelouBil</groupId>
+    <groupId>com.github.leloubil</groupId>
     <artifactId>PronoteLib</artifactId>
     <version>0.2</version>
 </dependency>
