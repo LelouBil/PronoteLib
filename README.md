@@ -22,10 +22,11 @@
 *** for contributors-url, forks-url, etc. This is an optional, concise syntax you may use.
 *** https://www.markdownguide.org/basic-syntax/#reference-style-links
 -->
+[![](https://jitpack.io/v/LelouBil/PronoteLib.svg)](https://jitpack.io/#LelouBil/PronoteLib)
+![Github latest release](https://flat.badgen.net/github/release/lelouBil/PronoteLib)
 ![GitHub issues](https://img.shields.io/github/issues/LelouBil/PronoteLib?style=flat-square)
 ![GitHub](https://img.shields.io/github/license/LelouBil/PronoteLib?style=flat-square)
 ![GitHub last commit](https://img.shields.io/github/last-commit/LelouBil/PronoteLib?style=flat-square)
-![Github latest release](https://flat.badgen.net/github/release/lelouBil/PronoteLib)
 ![Discord](https://img.shields.io/badge/Discord-LelouBil%239388-%237289DA?style=flat-square&logo=discord)
 [![Travis](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
@@ -125,11 +126,18 @@ PronoteConnection obj = new PronoteConnection(url);
 obj.login(user,pass);
 ```
 
-Pour récuperer l'emploi du temps:
+Pour récuperer l'emploi du temps :
 
 ```Java
 EDT emploidutemps = obj.getEmploiDuTemps(numerosemaine);
 ```
+
+Pour récupérer les notes :
+
+```Java
+GradeData grades = obj.getGrades(obj.getPeriodeList().get(0));
+```
+
 ou url est le lien vers la page élève du serveur PRONOTE
 ex : https://demo.index-education.net/pronote/eleve.html
 
