@@ -101,11 +101,12 @@ class AuthManager {
             //maybe wrong key
             String finalChall = encryptaes(outt.getBytes(StandardCharsets.UTF_8),userKey);
             m.put("challenge", finalChall);
-            result = obj.appelFonction("Authentification", m).get("donneesSec").get("donnees").get("ressource")
+            result = obj.appelFonction("Authentification", m).get("donneesSec").get("donnees");
+            JsonNode periodes = result.get("ressource")
                 .get("listeOngletsPourPeriodes")
                     .get("V").get(0).get("listePeriodes").get("V");
             List<Periode> plist = new ArrayList<>();
-            result.forEach(c -> plist.add(obj.deserialize(c,Periode.class)));
+            periodes.forEach(c -> plist.add(obj.deserialize(c,Periode.class)));
             obj.periodeList = plist;
         }
         catch(GeneralSecurityException e){
