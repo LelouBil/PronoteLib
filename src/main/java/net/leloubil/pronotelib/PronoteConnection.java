@@ -13,10 +13,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -24,6 +21,8 @@ import java.util.regex.Pattern;
 public class PronoteConnection {
 
     public static SimpleModule staticModule = new SimpleModule();
+
+    List<Periode> periodeList = new ArrayList<>();
 
     static {
         staticModule.addDeserializer(double.class, new PronoteDataDeserialiser<>(double.class));
@@ -52,18 +51,22 @@ public class PronoteConnection {
 	    this.setUrl(url);
     }
 
-    public GradeData getGrades(String periode) {
+    public GradeData getGrades(Periode periode) {
         try{
-            JsonNode gradesJson = navigate(PagesType.DernieresNotes,Collections.singletonMap("Periode", Collections.singletonMap("L", periode)));
-            GradeData gradeData = deserialize(gradesJson, GradeData.class);
-            return gradeData;
+            Map<String, Object> content = Collections.singletonMap("Periode",periode);
+            JsonNode gradesJson = navigate(PagesType.DernieresNotes, content);
+            return deserialize(gradesJson, GradeData.class);
         } catch (PronoteException e){
             e.printStackTrace();
             return null;
         }
     }
 
-    private <T> T deserialize(JsonNode node, Class<T> dataClass) {
+    public List<Periode> getPeriodeList(){
+        return periodeList;
+    }
+
+    <T> T deserialize(JsonNode node, Class<T> dataClass) {
         ObjectMapper om = new ObjectMapper();
         om.registerModule(deserModule);
         try {

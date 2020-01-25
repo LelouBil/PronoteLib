@@ -16,7 +16,7 @@ public class GradesTest {
     public void GetGradesTest() throws IllegalAccessException{
 	PronoteConnection comm = new PronoteConnection(TestPronotConnection.url);
         assertTrue("connexion",comm.login(TestPronotConnection.user, TestPronotConnection.pass));
-        GradeData t = comm.getGrades("Trimestre 1");
+        GradeData t = comm.getGrades(comm.getPeriodeList().get(0));
 	    //checkNull(t);
         System.out.println(t.getListeDevoirs().get(0).getMatiere().getMoyEleve());
     }
