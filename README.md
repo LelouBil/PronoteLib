@@ -125,11 +125,18 @@ PronoteConnection obj = new PronoteConnection(url);
 obj.login(user,pass);
 ```
 
-Pour récuperer l'emploi du temps:
+Pour récuperer l'emploi du temps :
 
 ```Java
 EDT emploidutemps = obj.getEmploiDuTemps(numerosemaine);
 ```
+
+Pour récupérer les notes :
+
+```Java
+GradeData grades = obj.getGrades(obj.getPeriodeList().get(0));
+```
+
 ou url est le lien vers la page élève du serveur PRONOTE
 ex : https://demo.index-education.net/pronote/eleve.html
 
