@@ -31,14 +31,14 @@
 [![Travis](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
 <br />
-<p >
+<p align="center">
   <a href="https://github.com/LelouBil/PronoteLib">
     <img src="https://imgur.com/c5iq9U3.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">PronoteLib</h3>
 
-  <p >
+  <p align="center">
     Bibliothèque Java pour communiquer avec un serveur PRONOTE 
     <br />(https://www.index-education.com/fr/logiciel-gestion-vie-scolaire.php)
     <br />
