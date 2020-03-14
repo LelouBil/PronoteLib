@@ -5,10 +5,12 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import lombok.Data;
 
 import java.util.*;
 
 @JsonIgnoreProperties(ignoreUnknown = true)
+@Data
 public class Homework {
 
     @JsonProperty("descriptif")
