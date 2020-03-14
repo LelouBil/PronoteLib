@@ -15,7 +15,7 @@ public class DateDeserializer extends StdDeserializer<Date> {
         super(Date.class);
     }
 
-    private static Calendar getCalendar(String date) {
+    public static Calendar getCalendar(String date) {
         String[] splat = date.split(" ");
         String[] day = splat[0].split("/");
         if (splat.length == 2) {

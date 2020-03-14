@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.module.SimpleModule;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.jayway.jsonpath.JsonPath;
 import net.leloubil.pronotelib.entities.*;
 import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
@@ -78,6 +79,13 @@ public class PronoteConnection {
         }
     }
 
+    <T> T deserialize(Map<String,Object> map, Class<T> dataClass) {
+        ObjectMapper om = new ObjectMapper();
+        JsonNode n = null;
+        n = om.valueToTree(map);
+        return deserialize(n,dataClass);
+    }
+
     public EDT getEmploiDuTemps(int semaine) {
         JsonNode jsonedt;
         try {
@@ -89,12 +97,28 @@ public class PronoteConnection {
         }
     }
 
+    public List<Homework> getHomeworkList(int week){
+        JsonNode jsonHomework;
+        try {
+            jsonHomework = navigate(PagesType.PageCahierDeTexte, Collections.singletonMap("domaine",Map.of("_T",8,"V","[" + week + "..62]")));
+            List<Map<String,Object>> allHomeWork = JsonPath.read(jsonHomework.toString(),"$.donneesSec.donnees.ListeTravauxAFaire.V");
+            List<Homework> hwList = new ArrayList<>();
+            for (Map<String, Object> homeWork : allHomeWork) {
+                hwList.add(deserialize(homeWork,Homework.class));
+            }
+            return hwList;
+        } catch (PronoteException e) {
+            e.printStackTrace();
+            return null;
+        }
+    }
+
     private static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
-    @SuppressWarnings("unused")
+
     public enum PagesType {
         PageAccueil(7),
-        PageCahierDeTexte(89),
+        PageCahierDeTexte(88),
         PageEmploiDuTemps(16),
         DernieresNotes(198);
 
