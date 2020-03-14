@@ -31,14 +31,14 @@
 [![Travis](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
 <br />
-<p align="center">
+<p >
   <a href="https://github.com/LelouBil/PronoteLib">
     <img src="https://imgur.com/c5iq9U3.png" alt="Logo" width="80" height="80">
   </a>
 
   <h3 align="center">PronoteLib</h3>
 
-  <p align="center">
+  <p >
     Bibliothèque Java pour communiquer avec un serveur PRONOTE 
     <br />(https://www.index-education.com/fr/logiciel-gestion-vie-scolaire.php)
     <br />
@@ -58,8 +58,8 @@
 <!-- TABLE OF CONTENTS -->
 ## Sommaire
 
-* [À propos](#À-propos)
-* [Démarrage](#démarrage)
+* [À propos](#About)
+* [Démarrage](#demarrage)
   * [Installation](#installation)
 * [Usage](#usage)
 * [Roadmap](#Roadmap)
@@ -70,7 +70,7 @@
 
 
 <!-- ABOUT THE PROJECT -->
-## À-propos
+## About
 
 
 PronoteLib est une bibliothèque java qui communique avec un serveur PRONOTE d'index-education  
@@ -78,7 +78,7 @@ PronoteLib est une bibliothèque java qui communique avec un serveur PRONOTE d'i
 
 
 <!-- GETTING STARTED -->
-## Démarrage
+## demarrage
 
 Voici les étapes d'installation de PronoteLib
 
@@ -95,7 +95,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LelouBil:PronoteLib:0.3.1'
+  implementation 'com.github.LelouBil:PronoteLib:0.4'
 }
 ```
 - maven
@@ -110,7 +110,7 @@ dependencies {
 	<dependency>
     <groupId>com.github.leloubil</groupId>
     <artifactId>PronoteLib</artifactId>
-    <version>0.3.1</version>
+    <version>0.4</version>
 </dependency>
 ```
 
@@ -152,7 +152,7 @@ Veuillez aller voir les [issues ouvertes](https://github.com/LelouBil/PronoteLib
 et veuillez voir le  [tableau Projet](https://github.com/LelouBil/PronoteLib/projects) pour les fonctionnalités en cours d'implémentation
 
 <!-- CONTRIBUTING -->
-## Contribution
+## contributions
 
 Toutes les contributions sont les bienvenues
 

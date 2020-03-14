@@ -4,7 +4,7 @@ plugins {
 }
 
 group 'net.leloubil'
-version '0.3.1-SNAPSHOT'
+version '0.4'
 
 sourceCompatibility = 1.8
 
