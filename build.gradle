@@ -1,7 +1,7 @@
 plugins {
     id 'maven'
     id 'java'
-    id "io.freefair.lombok" version "5.0.0-rc6"
+    id "io.freefair.lombok" version "5.0.0"
 }
 
 group 'net.leloubil'
