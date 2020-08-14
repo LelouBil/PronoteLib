@@ -134,7 +134,7 @@ public class PronoteConnection {
     }
 
     public boolean login(String user,String pass){
-        return initEncryption() && requestAuth(user,pass);
+        return initEncryption() && requestAuth(user,pass) && requestParam();
     }
 
     private boolean requestAuth(String user, String pass) {
@@ -162,10 +162,32 @@ public class PronoteConnection {
 	    }
 	    else return false;
     }
+    
+    private boolean requestParam() {
+        HashMap<String,Object> m = new HashMap<>();
+        
+        JsonNode paramResult = appelFonction("ParametresUtilisateur", m);
+        
+        //System.out.println(paramResult);
+        
+        try {
+	        JsonNode periodes = paramResult.get("donneesSec").get("donnees").get("ressource")
+	        		.get("listeOngletsPourPeriodes")
+	                .get("V").get(0).get("listePeriodes").get("V");
+	        List<Periode> plist = new ArrayList<>();
+	        periodes.forEach(c -> plist.add(deserialize(c,Periode.class)));
+	        periodeList = plist;
+	        
+	        return true;
+        }
+        catch(Exception e) {
+        	return false;
+        }
+    }
 
     private void getAcceuil() {
         navigate(PagesType.PageAccueil);
-        //System.out.println("Connexion terminée");
+        //System.out.println("Connexion terminÃ©e");
     }
 
 
@@ -223,6 +245,8 @@ public class PronoteConnection {
             return null;
         }
     }
+    
+
 
 
 
