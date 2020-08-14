@@ -187,7 +187,7 @@ public class PronoteConnection {
 
     private void getAcceuil() {
         navigate(PagesType.PageAccueil);
-        //System.out.println("Connexion terminÃ©e");
+        //System.out.println("Connexion terminée");
     }
 
 
