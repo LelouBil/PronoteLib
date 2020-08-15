@@ -96,29 +96,32 @@ class AuthManager {
             return false;
         }
         String outt = removeRnd(new String(out,StandardCharsets.UTF_8));
-        JsonNode result;
+        JsonNode authResult;
+        
+
         try{
             //maybe wrong key
             String finalChall = encryptaes(outt.getBytes(StandardCharsets.UTF_8),userKey);
             m.put("challenge", finalChall);
-            result = obj.appelFonction("Authentification", m).get("donneesSec").get("donnees");
-            JsonNode periodes = result.get("ressource")
-                .get("listeOngletsPourPeriodes")
-                    .get("V").get(0).get("listePeriodes").get("V");
-            List<Periode> plist = new ArrayList<>();
-            periodes.forEach(c -> plist.add(obj.deserialize(c,Periode.class)));
-            obj.periodeList = plist;
+            
+            //authResult only contains key, libelle utile and last connection time
+            authResult = obj.appelFonction("Authentification", m);
+            authResult = authResult.get("donneesSec").get("donnees");
+            
+            
+                       		
+
         }
         catch(GeneralSecurityException e){
             e.printStackTrace();
             return false;
         }
-        if (result.get("Acces") != null) {
+        if (authResult.get("Acces") != null) {
             //System.out.println("Erreur d'authentitifaction");
             return false;
         }
         try {
-            this.key = debyte(decryptAes(result.get("cle").asText(),userKey));
+            this.key = debyte(decryptAes(authResult.get("cle").asText(),userKey));
             return true;
         } catch (GeneralSecurityException e) {
             e.printStackTrace();
