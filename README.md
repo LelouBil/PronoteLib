@@ -95,7 +95,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LelouBil:PronoteLib:0.4'
+  implementation 'com.github.LelouBil:PronoteLib:0.4.2'
 }
 ```
 - maven
@@ -108,9 +108,9 @@ dependencies {
 </repositories>
 
 	<dependency>
-    <groupId>com.github.leloubil</groupId>
+    <groupId>com.github.LelouBil</groupId>
     <artifactId>PronoteLib</artifactId>
-    <version>0.4</version>
+    <version>0.4.2</version>
 </dependency>
 ```
 
@@ -136,6 +136,11 @@ Pour récupérer les notes :
 
 ```Java
 GradeData grades = obj.getGrades(obj.getPeriodeList().get(0));
+```
+
+Pour récupérer les devoirs:
+```Java
+List<Homework> homework = obj.getHomeworkList(numerosemaine);
 ```
 
 ou url est le lien vers la page élève du serveur PRONOTE
