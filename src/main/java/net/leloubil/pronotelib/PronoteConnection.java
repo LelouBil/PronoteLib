@@ -100,7 +100,13 @@ public class PronoteConnection {
     public List<Homework> getHomeworkList(int week){
         JsonNode jsonHomework;
         try {
-            jsonHomework = navigate(PagesType.PageCahierDeTexte, Collections.singletonMap("domaine",Map.of("_T",8,"V","[" + week + "..62]")));
+        	
+        	Map<String, Object> domaine = new HashMap<String, Object>();
+        	domaine.put("_T",8);
+        	domaine.put("V","[" + week + "..62]");
+        	
+        	
+            jsonHomework = navigate(PagesType.PageCahierDeTexte, Collections.singletonMap("domaine",domaine));
             List<Map<String,Object>> allHomeWork = JsonPath.read(jsonHomework.toString(),"$.donneesSec.donnees.ListeTravauxAFaire.V");
             List<Homework> hwList = new ArrayList<>();
             for (Map<String, Object> homeWork : allHomeWork) {
