@@ -100,12 +100,12 @@ public class PronoteConnection {
     public List<Homework> getHomeworkList(int week){
         JsonNode jsonHomework;
         try {
-        	
+
         	Map<String, Object> domaine = new HashMap<String, Object>();
         	domaine.put("_T",8);
         	domaine.put("V","[" + week + "..62]");
-        	
-        	
+
+
             jsonHomework = navigate(PagesType.PageCahierDeTexte, Collections.singletonMap("domaine",domaine));
             List<Map<String,Object>> allHomeWork = JsonPath.read(jsonHomework.toString(),"$.donneesSec.donnees.ListeTravauxAFaire.V");
             List<Homework> hwList = new ArrayList<>();
@@ -140,7 +140,7 @@ public class PronoteConnection {
     }
 
     public boolean login(String user,String pass){
-        return initEncryption() && requestAuth(user,pass) && requestParam();
+        return initEncryption() && requestAuth(user.toLowerCase(),pass) && requestParam();
     }
 
     private boolean requestAuth(String user, String pass) {
@@ -168,14 +168,14 @@ public class PronoteConnection {
 	    }
 	    else return false;
     }
-    
+
     private boolean requestParam() {
         HashMap<String,Object> m = new HashMap<>();
-        
+
         JsonNode paramResult = appelFonction("ParametresUtilisateur", m);
-        
+
         //System.out.println(paramResult);
-        
+
         try {
 	        JsonNode periodes = paramResult.get("donneesSec").get("donnees").get("ressource")
 	        		.get("listeOngletsPourPeriodes")
@@ -183,7 +183,7 @@ public class PronoteConnection {
 	        List<Periode> plist = new ArrayList<>();
 	        periodes.forEach(c -> plist.add(deserialize(c,Periode.class)));
 	        periodeList = plist;
-	        
+
 	        return true;
         }
         catch(Exception e) {
@@ -251,7 +251,7 @@ public class PronoteConnection {
             return null;
         }
     }
-    
+
 
 
 
