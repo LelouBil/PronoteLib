@@ -15,6 +15,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 
 import java.io.IOException;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -194,8 +195,25 @@ public class Lesson {
             LessonData d = new LessonData();
             d.className = cour.get("matiere").get("V").get("L").asText();
             d.teacher = cour.get("ListeContenus").get("V").get(0).get("L").asText();
-            if (cour.get("ListeContenus").get("V").size() >= 2)
-                d.room = cour.get("ListeContenus").get("V").get(1).get("L").asText();
+
+            AtomicBoolean b = new AtomicBoolean(false);
+            Iterator<JsonNode> i = cour.get("ListeContenus").get("V").elements();
+
+            while (i.hasNext() && !b.get()) {
+                JsonNode jsonNode = i.next();
+
+                Map<String, Object> map1 = new ObjectMapper().convertValue(jsonNode, Map.class);
+
+                map1.entrySet()
+                        .stream()
+                        .filter(entry -> !jsonNode.has("P") && Objects.equals(entry.getValue(), 17))
+                        .findFirst()
+                        .ifPresent(entry -> {
+                            d.room = jsonNode.get("L").asText();
+                            b.set(true);
+                        });
+            }
+
             c.lessonData = d;
             c.lessonDate = ctxt.readValue(cour.get("DateDuCours").traverse(p.getCodec()),Date.class);
             return c;

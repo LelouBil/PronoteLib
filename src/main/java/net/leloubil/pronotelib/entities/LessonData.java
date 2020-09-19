@@ -13,7 +13,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 })
 public class LessonData {
 
-    String teacher;
+    public String teacher;
 
     public String className;
 
