@@ -16,6 +16,7 @@ import org.apache.commons.lang3.builder.ToStringBuilder;
 import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.stream.StreamSupport;
 
 @JsonInclude(JsonInclude.Include.NON_NULL)
 @JsonIgnoreProperties(ignoreUnknown = true)
@@ -103,6 +104,7 @@ public class Lesson {
 
     /**
      * The {@link Date} at which the lesson should occur.
+     *
      * @return A {@link Date} representing the date at which the lesson should occur.
      */
     @JsonProperty("DateDuCours")
@@ -123,6 +125,7 @@ public class Lesson {
 
     /**
      * Whichever this lesson has homework associated whith it.
+     *
      * @return {@code true} if this lesson has homework, {@code false} otherwise.
      */
     @JsonProperty("AvecTafPublie")
@@ -166,12 +169,14 @@ public class Lesson {
     public static class LessonDeserializer extends StdDeserializer<Lesson> {
 
         private PronoteConnection link;
+
         public LessonDeserializer(PronoteConnection obj) {
             super(Lesson.class);
             link = obj;
         }
 
-        @Override @SuppressWarnings("unchecked")
+        @Override
+        @SuppressWarnings("unchecked")
         public Lesson deserialize(JsonParser p, DeserializationContext ctxt) throws IOException {
             JsonNode node = p.getCodec().readTree(p);
 
@@ -184,7 +189,7 @@ public class Lesson {
             ObjectMapper om = new ObjectMapper();
             om.configure(JsonParser.Feature.ALLOW_UNQUOTED_FIELD_NAMES, true);
             om.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
-            Map map = om.readValue(json, Map.class);
+            Map<String,Object> map = om.readValue(json, Map.class);
 
             map.put("cours", Collections.singletonMap("N", id));
             Lesson c = om.treeToValue(node, Lesson.class);
@@ -197,25 +202,18 @@ public class Lesson {
             d.teacher = cour.get("ListeContenus").get("V").get(0).get("L").asText();
 
             AtomicBoolean b = new AtomicBoolean(false);
-            Iterator<JsonNode> i = cour.get("ListeContenus").get("V").elements();
+            JsonNode jsonNode = cour.get("ListeContenus").get("V");
 
-            while (i.hasNext() && !b.get()) {
-                JsonNode jsonNode = i.next();
-
-                Map<String, Object> map1 = new ObjectMapper().convertValue(jsonNode, Map.class);
-
-                map1.entrySet()
-                        .stream()
-                        .filter(entry -> !jsonNode.has("P") && Objects.equals(entry.getValue(), 17))
-                        .findFirst()
-                        .ifPresent(entry -> {
-                            d.room = jsonNode.get("L").asText();
-                            b.set(true);
-                        });
-            }
+            StreamSupport.stream(Spliterators.spliteratorUnknownSize(jsonNode.elements(), Spliterator.ORDERED), false)
+                    .filter(coursNode -> coursNode.has("G") && coursNode.get("G").asInt() == 17)
+                    .findFirst()
+                    .ifPresent(entry -> {
+                        d.room = entry.get("L").asText();
+                        b.set(true);
+                    });
 
             c.lessonData = d;
-            c.lessonDate = ctxt.readValue(cour.get("DateDuCours").traverse(p.getCodec()),Date.class);
+            c.lessonDate = ctxt.readValue(cour.get("DateDuCours").traverse(p.getCodec()), Date.class);
             return c;
         }
 

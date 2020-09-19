@@ -7,7 +7,7 @@ plugins {
 group 'net.leloubil'
 version '0.4'
 
-sourceCompatibility = 1.9
+sourceCompatibility = 1.8
 
 repositories {
     mavenCentral()
