@@ -6,7 +6,7 @@ class SessionManager {
 
     private PronoteConnection obj;
 
-    SessionManager(int session, PronoteConnection o){
+    SessionManager(int session, PronoteConnection o) {
         this.obj = o;
         this.session = session;
     }

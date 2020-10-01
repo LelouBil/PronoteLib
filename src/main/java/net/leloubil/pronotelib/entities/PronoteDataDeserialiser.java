@@ -9,7 +9,7 @@ import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
 import java.io.IOException;
 
 public class PronoteDataDeserialiser<T> extends StdDeserializer<T> {
-
+    private static final long serialVersionUID = 5437210762900086277L;
     private Class<T> tclass;
 
     public PronoteDataDeserialiser(Class<T> tclass) {

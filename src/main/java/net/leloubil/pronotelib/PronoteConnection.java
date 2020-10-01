@@ -18,7 +18,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@SuppressWarnings({"unchecked", "SameParameterValue","UnusedReturnValue"})
+@SuppressWarnings({"SameParameterValue","UnusedReturnValue"})
 public class PronoteConnection {
 
     public static SimpleModule staticModule = new SimpleModule();
@@ -43,7 +43,6 @@ public class PronoteConnection {
                         new Version(1, 0, 0, null, null, null));
         Lesson.LessonDeserializer des = new Lesson.LessonDeserializer(this);
         deserModule.addDeserializer(Lesson.class, des);
-        ObjectMapper om = new ObjectMapper();
         deserModule.addDeserializer(Date.class, new DateDeserializer());
         //deserModule.addDeserializer(List.class,new MatiereList(this));
         deserModule.addDeserializer(String.class, new PronoteDataDeserialiser<>(String.class));
@@ -199,7 +198,7 @@ public class PronoteConnection {
 
 
     private JsonNode navigate(@SuppressWarnings("SameParameterValue") PagesType page, Map<String, Object> content) throws PronoteException {
-	HashMap<String,Object> m = new HashMap<>();
+        HashMap<String,Object> m = new HashMap<>();
         m.put("onglet",page.getId());
         m.put("ongletPrec", last);
         appelFonction("Navigation", m);
