@@ -11,6 +11,8 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 
 public class DateDeserializer extends StdDeserializer<Date> {
+    private static final long serialVersionUID = -4158729401061263761L;
+
     public DateDeserializer() {
         super(Date.class);
     }

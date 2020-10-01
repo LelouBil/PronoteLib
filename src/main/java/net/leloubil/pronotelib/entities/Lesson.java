@@ -155,6 +155,8 @@ public class Lesson {
     }
 
     public static class CDTDeser extends StdDeserializer<String> {
+        private static final long serialVersionUID = -7579068377361814227L;
+
         public CDTDeser() {
             super(String.class);
         }
@@ -167,7 +169,7 @@ public class Lesson {
     }
 
     public static class LessonDeserializer extends StdDeserializer<Lesson> {
-
+        private static final long serialVersionUID = -8816064485787075986L;
         private PronoteConnection link;
 
         public LessonDeserializer(PronoteConnection obj) {

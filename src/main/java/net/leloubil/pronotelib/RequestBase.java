@@ -8,7 +8,6 @@ public class RequestBase {
 
     public long session;
 
-
     public RequestBase(String numeroOrdre, long session) {
         this.numeroOrdre = numeroOrdre;
         this.session = session;

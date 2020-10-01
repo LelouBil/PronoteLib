@@ -8,6 +8,7 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import java.io.IOException;
 
 public class LessonDataDeserializer extends StdDeserializer<LessonData> {
+    private static final long serialVersionUID = 2518042882109525674L;
 
     public LessonDataDeserializer() {
         super(LessonData.class);
