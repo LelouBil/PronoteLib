@@ -135,6 +135,7 @@ public class Grade {
     }
 
     private static class MatiereDeser extends JsonDeserializer<Matiere> {
+        @SuppressWarnings("unused")
         public MatiereDeser() {
         }
 

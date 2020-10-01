@@ -63,10 +63,8 @@ class AuthManager {
             passDigest.update(mdp.getBytes(StandardCharsets.UTF_8));
             return Hex.encodeHexString(passDigest.digest(), false);
         } catch (NoSuchAlgorithmException e) {
-            e.printStackTrace();
+            throw new RuntimeException("Unexpected exception", e);
         }
-
-        return null;
     }
 
     private byte[] encrypt(byte[] data, PublicKey publicKey) throws BadPaddingException, IllegalBlockSizeException,
@@ -90,47 +88,29 @@ class AuthManager {
 
     private byte[] key = "".getBytes();
 
-    boolean doChallenge(String user, String mdp, String rnd, String challenge) {
+    void doChallenge(String user, String mdp, String rnd, String challenge) throws GeneralSecurityException {
         HashMap<String, Object> m = new HashMap<>();
         m.put("connexion", 0);
         m.put("espace", 3);
         byte[] userKey = (user + hashPass(mdp, rnd)).getBytes(StandardCharsets.UTF_8);
         byte[] out;
-        try {
-            // System.out.println(challenge);
-            out = decryptAes(challenge, userKey);
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
+        // System.out.println(challenge);
+        out = decryptAes(challenge, userKey);
         String outt = removeRnd(new String(out, StandardCharsets.UTF_8));
         JsonNode authResult;
 
-        try {
-            // maybe wrong key
-            String finalChall = encryptaes(outt.getBytes(StandardCharsets.UTF_8), userKey);
-            m.put("challenge", finalChall);
+        // maybe wrong key
+        String finalChall = encryptaes(outt.getBytes(StandardCharsets.UTF_8), userKey);
+        m.put("challenge", finalChall);
 
-            // authResult only contains key, libelle utile and last connection time
-            authResult = obj.appelFonction("Authentification", m);
-            authResult = authResult.get("donneesSec").get("donnees");
+        // authResult only contains key, libelle utile and last connection time
+        authResult = obj.appelFonction("Authentification", m);
+        authResult = authResult.get("donneesSec").get("donnees");
 
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
         if (authResult.get("Acces") != null) {
-            // System.out.println("Erreur d'authentitifaction");
-            return false;
+            throw new GeneralSecurityException("Erreur d'authentitifaction: champ 'Acces' manquant");
         }
-        try {
-            this.key = debyte(decryptAes(authResult.get("cle").asText(), userKey));
-            return true;
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
-
+        this.key = debyte(decryptAes(authResult.get("cle").asText(), userKey));
     }
 
     private byte[] iv = new byte[16];

@@ -14,6 +14,7 @@ import okhttp3.*;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.IOException;
+import java.security.GeneralSecurityException;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -138,12 +139,13 @@ public class PronoteConnection {
         }
     }
 
-    public boolean login(String user,String pass){
-        return initEncryption() && requestAuth(user.toLowerCase(),pass) && requestParam();
+    public boolean login(String user, String pass) { // TODO: BREAKING API CHANGE: returning bools on failure is so
+                                                     // 1972, use exceptions
+        return initEncryption() && requestAuth(user.toLowerCase(), pass) && requestParam();
     }
 
     private boolean requestAuth(String user, String pass) {
-        HashMap<String,Object> m = new HashMap<>();
+        HashMap<String, Object> m = new HashMap<>();
         m.put("genreConnexion", 0);
         m.put("genreEspace", 3);
         m.put("identifiant", user);
@@ -156,16 +158,20 @@ public class PronoteConnection {
         m.put("uuidAppliMobile", "");
         m.put("loginTokenSAV", "");
         JsonNode result = appelFonction("Identification", m);
-        if(result == null) return false;
-        if (result.get("Erreur") != null)  return false;
-	    result = result.get("donneesSec").get("donnees");
+        if (result == null)
+            return false;
+        if (result.get("Erreur") != null)
+            return false;
+        result = result.get("donneesSec").get("donnees");
         String alea = result.get("alea").asText();
         String challenge = result.get("challenge").asText();
-        if(authManager.doChallenge(user, pass, alea, challenge)){
+        try {
+            authManager.doChallenge(user, pass, alea, challenge);
             getAcceuil();
-	    return true;
-	    }
-	    else return false;
+            return true;
+        } catch (GeneralSecurityException e) {
+            return false;
+        }
     }
 
     private boolean requestParam() {
@@ -173,20 +179,24 @@ public class PronoteConnection {
 
         JsonNode paramResult = appelFonction("ParametresUtilisateur", m);
 
-        //System.out.println(paramResult);
+        // System.out.println(paramResult);
 
         try {
-	        JsonNode periodes = paramResult.get("donneesSec").get("donnees").get("ressource")
-	        		.get("listeOngletsPourPeriodes")
-	                .get("V").get(0).get("listePeriodes").get("V");
-	        List<Periode> plist = new ArrayList<>();
-	        periodes.forEach(c -> plist.add(deserialize(c,Periode.class)));
-	        periodeList = plist;
+            JsonNode periodes = paramResult.get("donneesSec")
+                    .get("donnees")
+                    .get("ressource")
+                    .get("listeOngletsPourPeriodes")
+                    .get("V")
+                    .get(0)
+                    .get("listePeriodes")
+                    .get("V");
+            List<Periode> plist = new ArrayList<>();
+            periodes.forEach(c -> plist.add(deserialize(c, Periode.class)));
+            periodeList = plist;
 
-	        return true;
-        }
-        catch(Exception e) {
-        	return false;
+            return true;
+        } catch (Exception e) {
+            return false;
         }
     }
 
