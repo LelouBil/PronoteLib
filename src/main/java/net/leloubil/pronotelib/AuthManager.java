@@ -137,16 +137,10 @@ class AuthManager {
         return Hex.encodeHexString(cipher.doFinal(plaintext));
     }
 
-    boolean sendIv(String mr, String er) {
-        try {
-            HashMap<String, Object> s = new HashMap<>();
-            s.put("Uuid", getUUID(mr, er));
-            obj.appelFonction("FonctionParametres", s);
-            iv = tempIv;
-        } catch (GeneralSecurityException e) {
-            e.printStackTrace();
-            return false;
-        }
-        return true;
+    void sendIv(String mr, String er) throws GeneralSecurityException {
+        HashMap<String, Object> s = new HashMap<>();
+        s.put("Uuid", getUUID(mr, er));
+        obj.appelFonction("FonctionParametres", s);
+        iv = tempIv;
     }
 }
