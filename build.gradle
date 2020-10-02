@@ -3,10 +3,12 @@ plugins {
     id 'java'
     id 'signing'
     id "io.freefair.lombok" version "5.2.1"
+    id 'net.researchgate.release' version '2.8.1'
 }
 
 group 'net.leloubil'
-version '0.4.5'
+archivesBaseName = rootProject.name
+version '0.4.5-SNAPSHOT'
 
 sourceCompatibility = 1.8
 
@@ -37,7 +39,6 @@ task sourcesJar(type: Jar) {
 }
 
 artifacts {
-    archivesBaseName =  'pronote-lib'
     archives javadocJar, sourcesJar
 }
 
@@ -90,3 +91,4 @@ uploadArchives {
         }
     }
 }
+afterReleaseBuild.dependsOn uploadArchives
