@@ -1,11 +1,12 @@
 plugins {
     id 'maven'
     id 'java'
+    id 'signing'
     id "io.freefair.lombok" version "5.2.1"
 }
 
 group 'net.leloubil'
-version '0.4'
+version '0.4.5'
 
 sourceCompatibility = 1.8
 
@@ -23,4 +24,69 @@ dependencies {
     compile "com.fasterxml.jackson.core:jackson-databind:2.11.3"
     compile 'commons-codec:commons-codec:1.15'
     testCompile group: 'junit', name: 'junit', version: '4.13'
+}
+
+task javadocJar(type: Jar) {
+    getArchiveClassifier().set('javadoc')
+    from javadoc
+}
+
+task sourcesJar(type: Jar) {
+    getArchiveClassifier().set('sources')
+    from sourceSets.main.allSource
+}
+
+artifacts {
+    archivesBaseName =  'pronote-lib'
+    archives javadocJar, sourcesJar
+}
+
+signing {
+    sign configurations.archives
+}
+
+
+uploadArchives {
+    repositories {
+        mavenDeployer {
+            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
+
+            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
+                authentication(userName: deployUsername, password: deployPassword)
+            }
+
+            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
+                authentication(userName: deployUsername, password: deployPassword)
+            }
+
+            pom.project {
+                name = rootProject.name
+                packaging 'jar'
+                // optionally artifactId can be defined here
+                description 'Java library to get data from a PRONOTE (Index-Education) server.'
+                url 'https://github.com/LelouBil/PronoteLib'
+
+                scm {
+                    connection 'scm:git:https://github.com/LelouBil/PronoteLib'
+                    developerConnection 'scm:git:https://github.com/LelouBil/PronoteLib'
+                    url 'https://github.com/LelouBil/PronoteLib'
+                }
+
+                licenses {
+                    license {
+                        name = 'MIT License'
+                        url 'https://github.com/LelouBil/PronoteLib/blob/master/LICENSE'
+                    }
+                }
+
+                developers {
+                    developer {
+                        id 'LelouBil'
+                        name = "Bilel MEDIMEGH"
+                        email 'bilel.medimegh@gmail.com'
+                    }
+                }
+            }
+        }
+    }
 }

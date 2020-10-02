@@ -95,7 +95,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.github.LelouBil:PronoteLib:0.4.2'
+  implementation 'com.github.LelouBil:PronoteLib:0.4.5'
 }
 ```
 - maven
@@ -110,7 +110,7 @@ dependencies {
 	<dependency>
     <groupId>com.github.LelouBil</groupId>
     <artifactId>PronoteLib</artifactId>
-    <version>0.4.2</version>
+    <version>0.4.5</version>
 </dependency>
 ```
 
