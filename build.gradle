@@ -28,6 +28,16 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13'
 }
 
+def v_ossrhUsername=""
+def v_ossrhPassword=""
+
+if (project.hasProperty("ossrhUsername")) {
+    v_ossrhUsername = ossrhUsername
+}
+if (project.hasProperty("ossrhPassword")) {
+    v_ossrhPassword = ossrhPassword
+}
+
 task javadocJar(type: Jar) {
     getArchiveClassifier().set('javadoc')
     from javadoc
@@ -53,11 +63,11 @@ uploadArchives {
             beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
 
             repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: deployUsername, password: deployPassword)
+                authentication(userName: v_ossrhUsername, password: v_ossrhPassword)
             }
 
             snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: deployUsername, password: deployPassword)
+                authentication(userName: v_ossrhUsername, password: v_ossrhPassword)
             }
 
             pom.project {
