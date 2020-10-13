@@ -3,9 +3,12 @@ plugins {
     id 'java-library'
     id 'signing'
     id "io.freefair.lombok" version "5.2.1"
+    id 'com.palantir.git-version' version "0.12.3"
 }
 
 group 'net.leloubil'
+
+def vDetails = versionDetails()
 version '0.4.5'
 
 sourceCompatibility = 1.8
@@ -42,41 +45,65 @@ java {
     withSourcesJar()
 }
 
+def artifactPom = {
+    name = rootProject.name
+    packaging = 'jar'
+    // optionally artifactId can be defined here
+    description = 'Java library to get data from a PRONOTE (Index-Education) server.'
+    url = 'https://github.com/LelouBil/PronoteLib'
+
+    scm {
+        connection = 'scm:git:https://github.com/LelouBil/PronoteLib'
+        developerConnection = 'scm:git:https://github.com/LelouBil/PronoteLib'
+        url = 'https://github.com/LelouBil/PronoteLib'
+    }
+
+    licenses {
+        license {
+            name = 'MIT License'
+            url = 'https://github.com/LelouBil/PronoteLib/blob/master/LICENSE'
+        }
+    }
+
+    developers {
+        developer {
+            id = 'LelouBil'
+            name = "Bilel MEDIMEGH"
+            email = 'bilel.medimegh@gmail.com'
+        }
+    }
+}
+
 publishing{
     publications{
-        maven(MavenPublication){
-
-            version = this.version
-
+        BranchHashSnapshot(MavenPublication){
+            version = vDetails.branchName + "-" + vDetails.gitHash + "-SNAPSHOT"
             from components.java
 
-            pom {
-                name = rootProject.name
-                packaging =  'jar'
-                // optionally artifactId can be defined here
-                description =  'Java library to get data from a PRONOTE (Index-Education) server.'
-                url =  'https://github.com/LelouBil/PronoteLib'
+            pom   artifactPom
+        }
 
-                scm {
-                    connection = 'scm:git:https://github.com/LelouBil/PronoteLib'
-                    developerConnection = 'scm:git:https://github.com/LelouBil/PronoteLib'
-                    url = 'https://github.com/LelouBil/PronoteLib'
-                }
+        BranchSnapshot(MavenPublication){
+            version = vDetails.branchName + "-SNAPSHOT"
+            from components.java
 
-                licenses {
-                    license {
-                        name = 'MIT License'
-                        url = 'https://github.com/LelouBil/PronoteLib/blob/master/LICENSE'
-                    }
-                }
+            pom   artifactPom
+        }
 
-                developers {
-                    developer {
-                        id = 'LelouBil'
-                        name = "Bilel MEDIMEGH"
-                        email = 'bilel.medimegh@gmail.com'
-                    }
-                }
+        ReleaseSnapshot(MavenPublication) {
+            version = (vDetails.branchName == "master" ? "" : vDetails.branchName + "-") + vDetails.lastTag + "-SNAPSHOT"
+            from components.java
+
+            pom artifactPom
+        }
+
+        if(vDetails.commitDistance == 0) {
+
+            Release(MavenPublication) {
+                version = (vDetails.branchName == "master" ? "" : vDetails.branchName + "-") + vDetails.lastTag
+                from components.java
+
+                pom artifactPom
             }
         }
     }
@@ -99,6 +126,8 @@ publishing{
 }
 
 signing {
-    sign publishing.publications.maven
+    publishing.publications.forEach{
+        sign it
+    }
 }
 
