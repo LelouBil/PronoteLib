@@ -1,13 +1,12 @@
 plugins {
-    id 'maven'
+    id 'maven-publish'
     id 'java-library'
     id 'signing'
     id "io.freefair.lombok" version "5.2.1"
 }
 
 group 'net.leloubil'
-archivesBaseName = rootProject.name
-version '0.4.5-SNAPSHOT'
+version '0.4.5'
 
 sourceCompatibility = 1.8
 
@@ -37,66 +36,69 @@ if (project.hasProperty("ossrhPassword")) {
     v_ossrhPassword = ossrhPassword
 }
 
-task javadocJar(type: Jar) {
-    getArchiveClassifier().set('javadoc')
-    from javadoc
+
+java {
+    withJavadocJar()
+    withSourcesJar()
 }
 
-task sourcesJar(type: Jar) {
-    getArchiveClassifier().set('sources')
-    from sourceSets.main.allSource
-}
+publishing{
+    publications{
+        maven(MavenPublication){
 
-artifacts {
-    archives javadocJar, sourcesJar
-}
+            version = this.version
 
-signing {
-    sign configurations.archives
-}
+            from components.java
 
-
-uploadArchives {
-    repositories {
-        mavenDeployer {
-            beforeDeployment { MavenDeployment deployment -> signing.signPom(deployment) }
-
-            repository(url: "https://oss.sonatype.org/service/local/staging/deploy/maven2/") {
-                authentication(userName: v_ossrhUsername, password: v_ossrhPassword)
-            }
-
-            snapshotRepository(url: "https://oss.sonatype.org/content/repositories/snapshots/") {
-                authentication(userName: v_ossrhUsername, password: v_ossrhPassword)
-            }
-
-            pom.project {
+            pom {
                 name = rootProject.name
-                packaging 'jar'
+                packaging =  'jar'
                 // optionally artifactId can be defined here
-                description 'Java library to get data from a PRONOTE (Index-Education) server.'
-                url 'https://github.com/LelouBil/PronoteLib'
+                description =  'Java library to get data from a PRONOTE (Index-Education) server.'
+                url =  'https://github.com/LelouBil/PronoteLib'
 
                 scm {
-                    connection 'scm:git:https://github.com/LelouBil/PronoteLib'
-                    developerConnection 'scm:git:https://github.com/LelouBil/PronoteLib'
-                    url 'https://github.com/LelouBil/PronoteLib'
+                    connection = 'scm:git:https://github.com/LelouBil/PronoteLib'
+                    developerConnection = 'scm:git:https://github.com/LelouBil/PronoteLib'
+                    url = 'https://github.com/LelouBil/PronoteLib'
                 }
 
                 licenses {
                     license {
                         name = 'MIT License'
-                        url 'https://github.com/LelouBil/PronoteLib/blob/master/LICENSE'
+                        url = 'https://github.com/LelouBil/PronoteLib/blob/master/LICENSE'
                     }
                 }
 
                 developers {
                     developer {
-                        id 'LelouBil'
+                        id = 'LelouBil'
                         name = "Bilel MEDIMEGH"
-                        email 'bilel.medimegh@gmail.com'
+                        email = 'bilel.medimegh@gmail.com'
                     }
                 }
             }
         }
     }
+
+    repositories {
+        maven{
+
+            name = "central"
+
+            def stagingUrl = "https://oss.sonatype.org/service/local/staging/deploy/maven2/"
+            def snapshotUrl = "https://oss.sonatype.org/content/repositories/snapshots/"
+            url = version.endsWith('SNAPSHOT') ? snapshotUrl : stagingUrl
+
+            credentials {
+                username v_ossrhUsername
+                password v_ossrhPassword
+            }
+        }
+    }
 }
+
+signing {
+    sign publishing.publications.maven
+}
+
