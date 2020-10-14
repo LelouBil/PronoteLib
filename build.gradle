@@ -29,14 +29,26 @@ dependencies {
     testCompile group: 'junit', name: 'junit', version: '4.13'
 }
 
-def v_ossrhUsername=""
-def v_ossrhPassword=""
+String v_ossrhUsername =System.getenv("ossrhUsername")
+String v_ossrhPassword =System.getenv("ossrhPassword")
 
 if (project.hasProperty("ossrhUsername")) {
     v_ossrhUsername = ossrhUsername
 }
 if (project.hasProperty("ossrhPassword")) {
     v_ossrhPassword = ossrhPassword
+}
+
+if(!project.hasProperty("signing.secretKeyRingFile")){
+    ext.signing.secretKeyRingFile= System.getenv("secretKeyRingFile")
+}
+
+if(!project.hasProperty("signing.keyId")){
+    ext.signing.keyId= System.getenv("keyId")
+}
+
+if(!project.hasProperty("signing.password")){
+    ext.signing.password= System.getenv("keyPassword")
 }
 
 
