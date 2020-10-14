@@ -39,17 +39,6 @@ if (project.hasProperty("ossrhPassword")) {
     v_ossrhPassword = ossrhPassword
 }
 
-if(!project.hasProperty("signing.secretKeyRingFile")){
-    ext.signing.secretKeyRingFile= System.getenv("secretKeyRingFile")
-}
-
-if(!project.hasProperty("signing.keyId")){
-    ext.signing.keyId= System.getenv("keyId")
-}
-
-if(!project.hasProperty("signing.password")){
-    ext.signing.password= System.getenv("keyPassword")
-}
 
 
 java {
