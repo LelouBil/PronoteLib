@@ -18,7 +18,7 @@ test {
 }
 dependencies {
     implementation("com.squareup.okhttp3:okhttp:4.9.1")
-    compile 'com.jayway.jsonpath:json-path:2.5.0'
+    compile 'com.jayway.jsonpath:json-path:2.6.0'
     compile 'org.apache.commons:commons-lang3:3.12.0'
     compile "com.fasterxml.jackson.core:jackson-databind:2.12.3"
     compile 'commons-codec:commons-codec:1.15'
