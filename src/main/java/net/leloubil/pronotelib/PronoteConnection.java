@@ -19,6 +19,9 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
+import java.time.LocalDate;
+import java.time.temporal.ChronoUnit;
+
 @SuppressWarnings({ "SameParameterValue", "UnusedReturnValue" })
 public class PronoteConnection {
 
@@ -295,5 +298,13 @@ public class PronoteConnection {
     private void setUrl(String url) {
         portalUrl = url;
         apiUrl = url.replace("eleve.html", "appelfonction/3/");
+    }
+    
+
+    public int getCurrentWeek() {
+    	LocalDate firstMonday = authManager.getFirstMonday();
+    	LocalDate currentDate = LocalDate.now();
+    	
+    	return 1 + (int)ChronoUnit.WEEKS.between(firstMonday, currentDate);
     }
 }

@@ -147,6 +147,11 @@ Pour récupérer les devoirs:
 List<Homework> homework = obj.getHomeworkList(numerosemaine);
 ```
 
+Pour récupérer le numéro de la semaine actuelle : 
+```Java
+int numerosemaine = obj.getCurrentWeek();
+```
+
 ou url est le lien vers la page élève du serveur PRONOTE
 ex : https://demo.index-education.net/pronote/eleve.html
 

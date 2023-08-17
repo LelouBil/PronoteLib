@@ -16,6 +16,8 @@ import java.util.Base64;
 import java.util.HashMap;
 import java.util.Random;
 
+import java.time.LocalDate;
+
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
@@ -35,6 +37,11 @@ class AuthManager {
     }
 
     private PronoteConnection obj;
+    private LocalDate firstMonday;
+    
+    public LocalDate getFirstMonday() {
+    	return firstMonday;
+    }
 
     private byte[] debyte(byte[] b) {
         String s = new String(b);
@@ -140,7 +147,23 @@ class AuthManager {
     void sendIv(String mr, String er) throws GeneralSecurityException {
         HashMap<String, Object> s = new HashMap<>();
         s.put("Uuid", getUUID(mr, er));
-        obj.appelFonction("FonctionParametres", s);
+        JsonNode response = obj.appelFonction("FonctionParametres", s);
         iv = tempIv;
+        
+		String stringFirstMonday = response.get("donneesSec")
+		.get("donnees")
+		.get("General")
+		.get("PremierLundi")
+		.get("V")
+		.toString();
+
+
+		
+		int firstMondayDay = Integer.parseInt(stringFirstMonday.substring(1, 3));
+		int firstMondayMonth = Integer.parseInt(stringFirstMonday.substring(4, 6));
+		int firstMondayYear = Integer.parseInt(stringFirstMonday.substring(7, 11));
+		
+		firstMonday = LocalDate.of(firstMondayYear, firstMondayMonth, firstMondayDay);
+		
     }
 }
