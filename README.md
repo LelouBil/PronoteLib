@@ -30,6 +30,10 @@
 ![Discord](https://img.shields.io/badge/Discord-LelouBil%239388-%237289DA?style=flat-square&logo=discord)
 [![Travis](https://travis-ci.com/LelouBil/PronoteLib.svg?branch=master)](https://travis-ci.com/LelouBil/PronoteLib)
 <!-- PROJECT LOGO -->
+<h1>Projet non maintenu</h1>
+<p>Ce projet n'est plus maintenu, il peut vous servir de référence pour commencer a reverse-engineer pronote mais cela fait plusieurs années qu'il n'a pas été mis a jour (et ne le sera pas)</p>
+<br />
+<br />
 <br />
 <p align="center">
   <a href="https://github.com/LelouBil/PronoteLib">
